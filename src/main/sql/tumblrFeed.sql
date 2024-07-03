@@ -30,6 +30,7 @@ CREATE TABLE IF NOT EXISTS t_server (
 CREATE TABLE IF NOT EXISTS t_user (
     pk_user serial,
     hashedName varchar(100) NOT NULL,
+    disabled boolean NOT NULL,
     app_admin boolean NOT NULL
 );
 
@@ -74,7 +75,7 @@ CREATE ROLE "TumblrFeed" WITH
 	CONNECTION LIMIT -1
 	PASSWORD 'CHANGE THIS WHEN CREATING THE DATABASE';
 
-GRANT SELECT, INSERT, UPDATE, DELETE ON t_channel, t_hashtag, t_search, t_server, t_user, tr_search_hashtag IN SCHEMA db_TumblrFeed TO TumblrFeed;
+GRANT SELECT, INSERT, UPDATE, DELETE ON t_channel, t_hashtag, t_search, t_server, t_user IN SCHEMA db_TumblrFeed TO TumblrFeed;
 
 CREATE OR REPLACE FUNCTION addLog() RETURNS TRIGGER AS $t_log$
     BEGIN

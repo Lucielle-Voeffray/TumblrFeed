@@ -17,7 +17,6 @@
 
     Contact:
         pro@lucielle.ch
-
 */
 
 package services;

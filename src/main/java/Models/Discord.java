@@ -85,6 +85,7 @@ public class Discord {
         long applicationId = client.getRestClient().getApplicationId().block();
 
         // Build our command's definition
+        //Build greet
         ApplicationCommandRequest greetCmdRequest = ApplicationCommandRequest.builder()
                 .name("greet")
                 .description("Greets You")
@@ -124,7 +125,7 @@ public class Discord {
         // Build search Deletion
         ApplicationCommandRequest createSearchDeletion = ApplicationCommandRequest.builder()
                 .name("deletesearch")
-                .description("[IRREVOCABLE] Delete a search by it's name.")
+                .description("[IRREVERSIBLE] Delete a search by it's name.")
                 .addOption(ApplicationCommandOptionData.builder()
                         .name("searchname")
                         .description("The name of the search you want to erase")
@@ -134,7 +135,7 @@ public class Discord {
                 )
                 .build();
 
-        // Build search Pause
+        // Build pausesearch
         ApplicationCommandRequest createSearchPause = ApplicationCommandRequest.builder()
                 .name("pausesearch")
                 .description("Pauses/Unpauses the search until reuse of this command")
@@ -164,15 +165,39 @@ public class Discord {
                 .description("[Server Admin Only] Lists all the searches done by everyone in this server")
                 .build();
 
-        ApplicationCommandRequest[] commands = new ApplicationCommandRequest[]{greetCmdRequest, createListMySearches, createSearchPause, createSearchDeletion, createSearchRequest, createListServerSearches};
+        // Build deletemydata
+        ApplicationCommandRequest createDeleteMyData = ApplicationCommandRequest.builder()
+                .name("deletemydata")
+                .description("[IRREVERSIBLE] Will delete all known data about you from my database")
+                .addOption(ApplicationCommandOptionData.builder()
+                        .name("username")
+                        .description("Confirm your choice by entering your username")
+                        .type(ApplicationCommandOption.Type.STRING.getValue())
+                        .required(true)
+                        .build()
+                ).build();
+
+        //App_admin commands (Guild commands on secrets.ADMIN_SERVER)
+        // Build erasedatafromuser
+        ApplicationCommandRequest createEraseDataFromUser = ApplicationCommandRequest.builder()
+                .name("erasedatafromuser")
+                .description("[APP_ADMIN ONLY] Will delete all data from a given user")
+                .addOption(ApplicationCommandOptionData.builder()
+                        .name("username")
+                        .description("Username of the user to delete")
+                        .type(ApplicationCommandOption.Type.STRING.getValue())
+                        .build()
+                ).build();
+
+        ApplicationCommandRequest[] commands = new ApplicationCommandRequest[]{greetCmdRequest, createListMySearches, createSearchPause, createSearchDeletion, createSearchRequest, createListServerSearches, createDeleteMyData};
 
         // Create guild command with discord
-        long guildId = 786360937677455430L; //Discord4J's server ID.
+        long guildId = secrets.ADMIN_SERVER; //Your admin/test server (Will give access to the app_admin commands (You'll also need to be marked as app_admin in the database)).
 
         //Create commands from the list
-        for (int i = 0; i < commands.length; i++) {
+        for (ApplicationCommandRequest command : commands) {
             client.getRestClient().getApplicationService()
-                    .createGuildApplicationCommand(applicationId, guildId, commands[i])
+                    .createGuildApplicationCommand(applicationId, guildId, command)
                     .subscribe();
         }
 
