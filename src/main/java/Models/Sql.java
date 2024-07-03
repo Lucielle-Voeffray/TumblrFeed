@@ -129,6 +129,7 @@ public class Sql {
                         if (connected) {
                             try {
                                 stmt = connection.prepareStatement(query);
+                                result = stmt.executeQuery();
                             } catch (SQLException r) {
                                 // TODO add error log
                             }
