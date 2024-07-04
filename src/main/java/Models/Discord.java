@@ -5,7 +5,7 @@
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+    any later version.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -33,6 +33,7 @@ import discord4j.discordjson.json.ApplicationCommandOptionData;
 import discord4j.discordjson.json.ApplicationCommandRequest;
 import secrets.secrets;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,12 +43,14 @@ public class Discord {
     private GatewayDiscordClient client;
     private Tumblr tumblr;
     private Sql sql;
+    long guildId;
 
     public Discord() {
         token = secrets.DISCORD;
         client = null;
         tumblr = null;
         sql = null;
+        guildId = secrets.ADMIN_SERVER;
     }
 
     public boolean connect() {
@@ -65,19 +68,64 @@ public class Discord {
     }
 
     public void start() {
-
         client.on(ChatInputInteractionEvent.class, event -> {
-            if (event.getCommandName().equalsIgnoreCase("greet")) {
-                return event.reply(String.format("Hallo du lieb %s", event.getOption("name")
-                        .flatMap(ApplicationCommandInteractionOption::getValue)
-                        .map(ApplicationCommandInteractionOptionValue::asString)
-                        .get()));
-            } else {
-                return event.reply("Something went wrong :smiling_face_with_tear:");
+
+            String userID = event.getInteraction().getUser().getId().asString();
+
+            String server = event.getInteraction().getGuildId().get().asString();
+
+            String channel = event.getInteraction().getChannelId().asString();
+
+            switch (event.getCommandName().toLowerCase()) {
+                case "greet":
+                    String name = event.getOption("name")
+                            .flatMap(ApplicationCommandInteractionOption::getValue)
+                            .map(ApplicationCommandInteractionOptionValue::asString)
+                            .get();
+
+                    return event.reply(String.format(greet(name)));
+                case "createsearch":
+                    String search = event.getOption("search")
+                            .flatMap(ApplicationCommandInteractionOption::getValue)
+                            .map(ApplicationCommandInteractionOptionValue::asString)
+                            .get();
+
+                    String searchName = event.getOption("nameyoursearch")
+                            .flatMap(ApplicationCommandInteractionOption::getValue)
+                            .map(ApplicationCommandInteractionOptionValue::asString)
+                            .get();
+
+                    if (createSearch(search, searchName, userID, server, channel)) {
+                        event.reply("Your search has been successfully added to this channel");
+                    } else {
+                        event.reply("Something went wrong, please try again and if it persists consider adding an issue on https://github.com/Lucielle-Voeffray/TumblrFeed/issues");
+                    }
+
+
+                default:
+                    return event.reply("Something went wrong :smiling_face_with_tear:");
             }
         }).subscribe();
+    }
 
+    public String greet(String name) {
+        return String.format("Hallo du lieb %s", name);
+    }
 
+    public boolean createSearch(String search, String searchName, String userID, String server, String channel) {
+        boolean success = false;
+
+        int chan = 0;
+        try {
+            String query = String.format("SELECT pk_channel FROM t_channel WHERE id = %s", channel);
+            chan = Integer.parseInt(sql.select(query).getObject("pk_channel").toString());
+        } catch (SQLException e) {
+            System.out.printf("%s [ERROR] SELECT FAILURE Discod.java method: createSearch | Error Message: %s%n", java.time.LocalDateTime.now(), e);
+        }
+        System.out.println(chan);
+        // sql.update("INSERT INTO t_search (searchName)");
+
+        return success;
     }
 
     public void build() {
@@ -177,6 +225,12 @@ public class Discord {
                         .build()
                 ).build();
 
+        // Build deleteserverdata
+        ApplicationCommandRequest createDeleteServerData = ApplicationCommandRequest.builder()
+                .name("deleteserverdata")
+                .description("[Server Admin only] If you want to delete all data concerning your server")
+                .build();
+
         //App_admin commands (Guild commands on secrets.ADMIN_SERVER)
         // Build erasedatafromuser
         ApplicationCommandRequest createEraseDataFromUser = ApplicationCommandRequest.builder()
@@ -189,13 +243,20 @@ public class Discord {
                         .build()
                 ).build();
 
-        ApplicationCommandRequest[] commands = new ApplicationCommandRequest[]{greetCmdRequest, createListMySearches, createSearchPause, createSearchDeletion, createSearchRequest, createListServerSearches, createDeleteMyData};
+        ApplicationCommandRequest[] commands = new ApplicationCommandRequest[]{greetCmdRequest, createListMySearches, createSearchPause, createSearchDeletion, createSearchRequest, createListServerSearches, createDeleteMyData, createDeleteServerData};
+        ApplicationCommandRequest[] appAdminCommands = new ApplicationCommandRequest[]{createEraseDataFromUser};
 
         // Create guild command with discord
-        long guildId = secrets.ADMIN_SERVER; //Your admin/test server (Will give access to the app_admin commands (You'll also need to be marked as app_admin in the database)).
 
         //Create commands from the list
         for (ApplicationCommandRequest command : commands) {
+            client.getRestClient().getApplicationService()
+                    .createGuildApplicationCommand(applicationId, guildId, command)
+                    .subscribe();
+        }
+
+        // Create commands for App_Admin
+        for (ApplicationCommandRequest command : appAdminCommands) {
             client.getRestClient().getApplicationService()
                     .createGuildApplicationCommand(applicationId, guildId, command)
                     .subscribe();
