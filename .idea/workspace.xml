@@ -8,13 +8,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="92978bf1-93b6-4998-bcdf-f5ae45362079" name="Changes" comment="Un petit readme !!">
+      <change afterPath="$PROJECT_DIR$/src/main/java/services/Cypher.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/services/Mail.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Models/Discord.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Models/Discord.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Models/Sql.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Models/Sql.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Models/Tumblr.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Models/Tumblr.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/TumblrFeed/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/TumblrFeed/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/services/Hasher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/services/Hasher.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/sql/tumblrFeed.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/sql/tumblrFeed.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

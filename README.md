@@ -51,6 +51,10 @@ public static final String SQL_PASSWORD = "PASSWORD FOR TUMBLRFEED (SET IN /Tumb
 public static final String SQL_FQDN = "jdbc:postgresql://[URL TO YOUR DATABASE]:[THE PORT YOUR DATABASE LISTENS TO]/db_TumblrFeed";
 
 // E-Mails alerts
+public static final String GPG_PUB_KEY = "PUBLIC KEY FOR YOUR ALERT EMAIL";
+public static final String MAIL_USER = "USERNAME FOR YOUR ALERTS EMAIL";
+public static final String MAIL_PASSWORD = "PASSWORD FOR YOUR ALERTS EMAIL";
+public static final String DESTINATION_EMAIL = "TO WHAT ADDRESS THE EMAIL SHOULD BE SENT";
 ```
 
 ## Many thanks to:

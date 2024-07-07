@@ -120,7 +120,7 @@ public class Discord {
             String query = String.format("SELECT pk_channel FROM t_channel WHERE id = %s", channel);
             chan = Integer.parseInt(sql.select(query).getObject("pk_channel").toString());
         } catch (SQLException e) {
-            System.out.printf("%s [ERROR] SELECT FAILURE Discod.java method: createSearch | Error Message: %s%n", java.time.LocalDateTime.now(), e);
+            System.out.printf("%s [ERROR] SELECT FAILURE Discord.java method: createSearch | Error Message: %s%n", java.time.LocalDateTime.now(), e);
         }
         System.out.println(chan);
         // sql.update("INSERT INTO t_search (searchName)");
