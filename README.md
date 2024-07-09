@@ -59,5 +59,5 @@ public static final String DESTINATION_EMAIL = "TO WHAT ADDRESS THE EMAIL SHOULD
 
 ## Many thanks to:
 
-- [EcklerOChokola](), who read my code and gave me advice
+- [EcklerOChokola](https://github.com/EcklerOChokola), who read my code and gave me advice
 - [Lawhan](), who suggested this project to me
