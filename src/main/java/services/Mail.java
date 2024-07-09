@@ -47,15 +47,14 @@ public class Mail {
 
         Session session = Session.getDefaultInstance(properties);
 
-        StringBuilder content = new StringBuilder();
-        content.append(String.format("%s tried to create a search with an illegal word ! %n", discordUsername));
-        content.append(String.format("Discord Username / Hash / id : %s / %s / %s%n", discordUsername, Hasher.hash(discordUsername), userID));
-        content.append(String.format("Discord Server / Server ID : %s / %s%n", serverName, serverID));
-        content.append(String.format("Discord Channel / Channel ID : %s / %s%n", channelName, channelID));
-        content.append(String.format("Tumblr Search Name : %s", searchName));
-        content.append(String.format("Tumblr Search content : %s", search));
+        String content = String.format("%s tried to create a search with an illegal word ! %n", discordUsername) +
+                String.format("Discord Username / Hash / id : %s / %s / %s%n", discordUsername, Hasher.hash(discordUsername), userID) +
+                String.format("Discord Server / Server ID : %s / %s%n", serverName, serverID) +
+                String.format("Discord Channel / Channel ID : %s / %s%n", channelName, channelID) +
+                String.format("Tumblr Search Name : %s", searchName) +
+                String.format("Tumblr Search content : %s", search);
 
-        String safeContent = Cypher.encrypt(content.toString());
+        String safeContent = Cypher.encrypt(content);
 
         try {
             MimeMessage message = new MimeMessage(session);
