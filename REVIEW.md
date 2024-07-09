@@ -44,7 +44,7 @@ Maybe less methods in your services should be public, in order to limit the ways
 
 ## Discord
 
-In [this switch](main/src/main/java/Models/Discord.java#L79), the flow
+In [this switch](https://github.com/Lucielle-Voeffray/TumblrFeed/blob/main/src/main/java/Models/Discord.java#L79), the flow
 
 ```java
 String _2 = event.getOption(_1)
@@ -79,7 +79,7 @@ Same thing as Discord, some methods use the same code multiple times, e.g. the S
 
 ## Cypher
 
-The method [exec](main/src/main/java/services/Cypher.java#L39) is deprecated as of Java18.
+The method [exec](https://github.com/Lucielle-Voeffray/TumblrFeed/blob/main/src/main/java/services/Cypher.java#L39) is deprecated as of Java18.
 
 The method exec should instead be used with an array of String, as such :  
 ```java
@@ -95,7 +95,7 @@ try {
 }
 ```
 
-At [line 56](main/src/main/java/services/Cypher.java#L56), the `String.format` should have the format in simple quotes, see [the sh manual page](https://linux.die.net/man/1/sh)
+At [line 56](https://github.com/Lucielle-Voeffray/TumblrFeed/blob/main/src/main/java/services/Cypher.java#L56), the `String.format` should have the format in simple quotes, see [the sh manual page](https://linux.die.net/man/1/sh)
 
 *Minor optimisation*  
-At [line 65](main/src/main/java/services/Cypher.java#L65), use `.append(s + "\n")` instead of two append calls to reduce the number of calls
+At [line 65](https://github.com/Lucielle-Voeffray/TumblrFeed/blob/main/src/main/java/services/Cypher.java#L65), use `.append(s + "\n")` instead of two append calls to reduce the number of calls
