@@ -22,16 +22,12 @@
 
 package app.TumblrFeed;
 
-import Models.Discord;
-import Models.Sql;
-import Models.Tumblr;
-
-import static java.lang.Thread.sleep;
+import services.Cypher;
 
 public class Main {
     public static void main(String[] args) {
 
-        // Create objects needed
+        /*// Create objects needed
         Tumblr tumblr = new Tumblr();
         Discord discord = new Discord();
         Sql sql = new Sql();
@@ -61,8 +57,9 @@ public class Main {
 
         // Start the app
         discord.start();
-        tumblr.start();
+        tumblr.start();*/
 
+        System.out.println(Cypher.encrypt("Hello"));
 
     }
 }

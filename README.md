@@ -51,10 +51,10 @@ public static final String SQL_PASSWORD = "PASSWORD FOR TUMBLRFEED (SET IN /Tumb
 public static final String SQL_FQDN = "jdbc:postgresql://[URL TO YOUR DATABASE]:[THE PORT YOUR DATABASE LISTENS TO]/db_TumblrFeed";
 
 // E-Mails alerts
-public static final String GPG_PUB_KEY = "PUBLIC KEY FOR YOUR ALERT EMAIL";
+public static final String GPG_PUBLIC_KEY_FILE = "FILEPATH TO YOUR PUBLIC GPG KEY FOR YOUR ALERT EMAIL"; // You can put your key file in src/main/java/secrets
 public static final String MAIL_USER = "USERNAME FOR YOUR ALERTS EMAIL";
 public static final String MAIL_PASSWORD = "PASSWORD FOR YOUR ALERTS EMAIL";
-public static final String DESTINATION_EMAIL = "TO WHAT ADDRESS THE EMAIL SHOULD BE SENT";
+public static final String DESTINATION_EMAIL = "TO WHAT ADDRESS THE EMAIL SHOULD BE SENT"; // If, like me, you are lazy, just put the same as MAIL_USER, it'll work fine
 ```
 
 ## Many thanks to:
