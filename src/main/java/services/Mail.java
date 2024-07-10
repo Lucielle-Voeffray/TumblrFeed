@@ -35,11 +35,12 @@ import java.util.Properties;
 public class Mail {
 
     private static final String USER_MAIL = secrets.MAIL_USER;
+    private static final String USER_PASSWORD = secrets.MAIL_PASSWORD;
     private static final String DESTINATION_MAIL = secrets.DESTINATION_EMAIL;
-    private static final String HOST = "localhost";
+    private static final String HOST = secrets.SMTP_SERVER;
 
     public static boolean sendMail(String discordUsername, String userID, String searchName, String search, String serverName, String serverID, String channelName, String channelID) {
-        boolean success = true;
+        boolean success = false;
 
         Properties properties = System.getProperties();
 
@@ -47,7 +48,8 @@ public class Mail {
 
         Session session = Session.getDefaultInstance(properties);
 
-        String content = String.format("%s tried to create a search with an illegal word ! %n", discordUsername) +
+        String content =
+                String.format("%s tried to create a search with an illegal word ! %n", discordUsername) +
                 String.format("Discord Username / Hash / id : %s / %s / %s%n", discordUsername, Hasher.hash(discordUsername), userID) +
                 String.format("Discord Server / Server ID : %s / %s%n", serverName, serverID) +
                 String.format("Discord Channel / Channel ID : %s / %s%n", channelName, channelID) +
@@ -57,6 +59,9 @@ public class Mail {
         String safeContent = Cypher.encrypt(content);
 
         try {
+            properties.setProperty("mail.user", USER_MAIL);
+            properties.setProperty("mail.password", USER_PASSWORD);
+
             MimeMessage message = new MimeMessage(session);
 
             message.setFrom(USER_MAIL);
@@ -68,6 +73,7 @@ public class Mail {
             message.setText(safeContent);
 
             Transport.send(message);
+            success = true;
 
         } catch (MessagingException e) {
             System.out.printf("%s [ERROR] FAILURE Mail.java method: sendMail | Error Message: %s%n", java.time.LocalDateTime.now(), e);

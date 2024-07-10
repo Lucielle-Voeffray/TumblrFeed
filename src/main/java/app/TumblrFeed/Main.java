@@ -22,7 +22,7 @@
 
 package app.TumblrFeed;
 
-import services.Cypher;
+import services.Mail;
 
 public class Main {
     public static void main(String[] args) {
@@ -59,7 +59,7 @@ public class Main {
         discord.start();
         tumblr.start();*/
 
-        System.out.println(Cypher.encrypt("Hello"));
+        System.out.println(Mail.sendMail("Salut", "121365468543213", "Lolies are great", "loli", "randomServer", "12546984", "loli", "1213548"));
 
     }
 }
