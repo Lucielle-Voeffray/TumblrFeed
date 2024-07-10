@@ -22,6 +22,7 @@
 
 package services;
 
+import org.jetbrains.annotations.NotNull;
 import secrets.secrets;
 
 import javax.mail.MessagingException;
@@ -48,15 +49,7 @@ public class Mail {
 
         Session session = Session.getDefaultInstance(properties);
 
-        String content =
-                String.format("%s tried to create a search with an illegal word ! %n", discordUsername) +
-                String.format("Discord Username / Hash / id : %s / %s / %s%n", discordUsername, Hasher.hash(discordUsername), userID) +
-                String.format("Discord Server / Server ID : %s / %s%n", serverName, serverID) +
-                String.format("Discord Channel / Channel ID : %s / %s%n", channelName, channelID) +
-                String.format("Tumblr Search Name : %s", searchName) +
-                String.format("Tumblr Search content : %s", search);
-
-        String safeContent = Cypher.encrypt(content);
+        String safeContent = getContent(discordUsername, userID, searchName, search, serverName, serverID, channelName, channelID);
 
         try {
             properties.setProperty("mail.user", USER_MAIL);
@@ -80,5 +73,21 @@ public class Mail {
         }
 
         return success;
+    }
+
+    public static @NotNull String getContent(String discordUsername, String userID, String searchName, String search, String serverName, String serverID, String channelName, String channelID) {
+        String content =
+                String.format("%n") +
+                        String.format("%s tried to create a search with an illegal word ! %n", discordUsername) +
+                        String.format("Discord Username / Hash / id : %s / %s / %s%n", discordUsername, Hasher.hash(discordUsername), userID) +
+                        String.format("Discord Server / Server ID : %s / %s%n", serverName, serverID) +
+                        String.format("Discord Channel / Channel ID : %s / %s%n", channelName, channelID) +
+                        String.format("Tumblr Search Name : %s", searchName) +
+                        String.format("Tumblr Search content : %s", search);
+
+        String safeContent = Cypher.encrypt(content);
+        System.out.println(safeContent);
+
+        return safeContent;
     }
 }

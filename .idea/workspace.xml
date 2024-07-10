@@ -7,9 +7,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="92978bf1-93b6-4998-bcdf-f5ae45362079" name="Changes" comment="Un petit readme !!">
+    <list default="true" id="92978bf1-93b6-4998-bcdf-f5ae45362079" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/TumblrFeed/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/TumblrFeed/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/services/Cypher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/services/Cypher.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/services/Mail.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/services/Mail.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -228,7 +228,15 @@
       <option name="project" value="LOCAL" />
       <updated>1720087423801</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Turns out je pouvais pas envoyer de mails lol, maintenant c'est bon">
+      <option name="closed" value="true" />
+      <created>1720607210253</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1720607210253</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -255,9 +263,10 @@
     <MESSAGE value="Ajout des mentions de copyright" />
     <MESSAGE value="On avance gentiment" />
     <MESSAGE value="Finish retry query in case of connection error" />
-    <MESSAGE value="Un petit readme !!" />
     <MESSAGE value="Debugged !!" />
-    <option name="LAST_COMMIT_MESSAGE" value="Debugged !!" />
+    <MESSAGE value="Un petit readme !!" />
+    <MESSAGE value="Turns out je pouvais pas envoyer de mails lol, maintenant c'est bon" />
+    <option name="LAST_COMMIT_MESSAGE" value="Turns out je pouvais pas envoyer de mails lol, maintenant c'est bon" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
