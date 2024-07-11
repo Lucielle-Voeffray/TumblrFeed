@@ -48,12 +48,11 @@ public class Cypher {
 
     public static @NotNull String encrypt(String unsafeText) {
         String safeText = "";
-
         String mail = secrets.MAIL_USER;
         String[] cmdCypher = {
                 "/bin/sh",
                 "-c",
-                "echo " + unsafeText + " | gpg --encrypt --armor --recipient " + mail
+                "echo '" + unsafeText + "' | gpg --encrypt --armor --recipient " + mail
                 // String.format("echo %s | gpg --encrypt --armor --recipient %s", unsafeText, mail)
         };
         Process process = null;
@@ -69,11 +68,16 @@ public class Cypher {
                 }
             }
             while ((s = reader.readLine()) != null) {
-                safeText += String.format("%s%n", s);
+                if (!s.equals("-----END PGP MESSAGE-----")) {
+                    safeText += s;
+                } else {
+                    safeText += "-----END PGP MESSAGE-----";
+                    break;
+                }
             }
         } catch (java.io.IOException e) {
             System.out.printf("%s [ERROR] FAILURE Cypher.java method: encrypt: 1rst catch | Error Message: %s%n", java.time.LocalDateTime.now(), e);
         }
-        return safeText.toString();
+        return safeText;
     }
 }
