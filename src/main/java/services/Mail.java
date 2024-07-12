@@ -76,14 +76,15 @@ public class Mail {
     }
 
     public static @NotNull String getContent(String discordUsername, String userID, String searchName, String search, String serverName, String serverID, String channelName, String channelID) {
+        String hash = Hasher.hash(discordUsername);
         String content =
-                String.format("%n") +
-                        String.format("%s tried to create a search with an illegal word ! %n", discordUsername) +
-                        String.format("Discord Username / Hash / id : %s / %s / %s%n", discordUsername, Hasher.hash(discordUsername), userID) +
+                String.format("%s tried to create a search with an illegal word ! %n", discordUsername) +
+                        String.format("Discord Username / Hash / id : %s / %s / %s%n", discordUsername, hash, userID) +
                         String.format("Discord Server / Server ID : %s / %s%n", serverName, serverID) +
                         String.format("Discord Channel / Channel ID : %s / %s%n", channelName, channelID) +
-                        String.format("Tumblr Search Name : %s", searchName) +
-                        String.format("Tumblr Search content : %s", search);
+                        String.format("Tumblr Search Name : %s%n", searchName) +
+                        String.format("Tumblr Search content : %s%n", search) +
+                        String.format("Commande pour mettre le User en pause: /pauseuser hash: %s", hash);
 
         String safeContent = Cypher.encrypt(content);
         System.out.println(safeContent);

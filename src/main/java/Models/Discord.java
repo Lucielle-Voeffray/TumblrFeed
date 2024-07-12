@@ -243,8 +243,20 @@ public class Discord {
                         .build()
                 ).build();
 
+        // Build pauseuser
+        ApplicationCommandRequest createPauseUser = ApplicationCommandRequest.builder()
+                .name("pauseuser")
+                .description("[APP_ADMIN ONLY] Will cut all the possibilities for this user to use the bot and pause ALL their searches")
+                .build();
+
+        // Build exitgracefully
+        ApplicationCommandRequest createExitGracefully = ApplicationCommandRequest.builder()
+                .name("exitgracefully")
+                .description("[APP_ADMIN ONLY] Will stop the bot")
+                .build();
+
         ApplicationCommandRequest[] commands = new ApplicationCommandRequest[]{greetCmdRequest, createListMySearches, createSearchPause, createSearchDeletion, createSearchRequest, createListServerSearches, createDeleteMyData, createDeleteServerData};
-        ApplicationCommandRequest[] appAdminCommands = new ApplicationCommandRequest[]{createEraseDataFromUser};
+        ApplicationCommandRequest[] appAdminCommands = new ApplicationCommandRequest[]{createEraseDataFromUser, createPauseUser, createExitGracefully};
 
         // Create guild command with discord
 
