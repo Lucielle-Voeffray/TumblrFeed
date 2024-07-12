@@ -47,37 +47,26 @@ public class Cypher {
 
 
     public static @NotNull String encrypt(String unsafeText) {
-        String safeText = "";
-        String mail = secrets.MAIL_USER;
+        StringBuilder safeText = new StringBuilder();
+        String mail = secrets.DESTINATION_EMAIL;
         String[] cmdCypher = {
                 "/bin/sh",
                 "-c",
-                "echo '" + unsafeText + "' | gpg --encrypt --armor --recipient " + mail
-                // String.format("echo %s | gpg --encrypt --armor --recipient %s", unsafeText, mail)
+                "echo '" + unsafeText + "' | gpg --encrypt --sign --armor --recipient " + mail
         };
-        Process process = null;
+        Process process;
         try {
             process = Runtime.getRuntime().exec(cmdCypher);
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String s;
-            boolean prout = false;
-            while (!prout) {
-                if ((reader.readLine()).equals("-----BEGIN PGP MESSAGE-----")) {
-                    safeText = String.format("-----BEGIN PGP MESSAGE-----%n");
-                    prout = true;
-                }
-            }
             while ((s = reader.readLine()) != null) {
-                if (!s.equals("-----END PGP MESSAGE-----")) {
-                    safeText += s;
-                } else {
-                    safeText += "-----END PGP MESSAGE-----";
-                    break;
-                }
+                safeText.append(s).append('\n');
             }
         } catch (java.io.IOException e) {
             System.out.printf("%s [ERROR] FAILURE Cypher.java method: encrypt: 1rst catch | Error Message: %s%n", java.time.LocalDateTime.now(), e);
         }
-        return safeText;
+
+
+        return safeText.toString();
     }
 }
