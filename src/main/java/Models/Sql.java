@@ -22,6 +22,7 @@
 
 package Models;
 
+import app.TumblrFeed.supervisor;
 import org.jetbrains.annotations.NotNull;
 import org.postgresql.ds.PGSimpleDataSource;
 import secrets.secrets;
@@ -32,15 +33,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class Sql {
+public class Sql implements supervisor {
 
     private final String fqdn;
     private final String user;
     private final String password;
     private Connection connection;
     private DataSource datasource;
-    private Discord discord;
-    private Tumblr tumblr;
 
     public Sql() {
         fqdn = secrets.SQL_FQDN;
@@ -48,8 +47,6 @@ public class Sql {
         password = secrets.SQL_PASSWORD;
         datasource = null;
         connection = null;
-        discord = null;
-        tumblr = null;
     }
 
     /**
@@ -192,21 +189,5 @@ public class Sql {
             }
         }
         return success;
-    }
-
-    public Discord getDiscord() {
-        return discord;
-    }
-
-    public void setDiscord(Discord discord) {
-        this.discord = discord;
-    }
-
-    public Tumblr getTumblr() {
-        return tumblr;
-    }
-
-    public void setTumblr(Tumblr tumblr) {
-        this.tumblr = tumblr;
     }
 }

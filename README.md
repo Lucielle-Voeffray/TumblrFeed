@@ -5,6 +5,8 @@
 This is a Discord bot that will perform searches on Tumblr for you and create a personalized feed in a Discord channel.
 In order to keep all the information needed, I decided to set a postgres database up.
 
+As of now, there is no working releases.
+
 ## Privacy of information
 
 In order to keep your information private, the database will not store your discord handle, but a hash of your handle.

@@ -8,10 +8,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="92978bf1-93b6-4998-bcdf-f5ae45362079" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/app/TumblrFeed/supervisor.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Models/Discord.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Models/Discord.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Models/Sql.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Models/Sql.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Models/Tumblr.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Models/Tumblr.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/app/TumblrFeed/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/TumblrFeed/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/services/Mail.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/services/Mail.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/sql/tumblrFeed.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/sql/tumblrFeed.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,8 +25,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -246,7 +250,15 @@
       <option name="project" value="LOCAL" />
       <updated>1720784045455</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="Quelques petits changements et ajout de deux commande discord pour les APP_ADMIN">
+      <option name="closed" value="true" />
+      <created>1720786813234</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1720786813234</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -277,9 +289,20 @@
     <MESSAGE value="Un petit readme !!" />
     <MESSAGE value="Turns out je pouvais pas envoyer de mails lol, maintenant c'est bon" />
     <MESSAGE value="C'est bon mon chiffrement se fait correctement" />
-    <option name="LAST_COMMIT_MESSAGE" value="C'est bon mon chiffrement se fait correctement" />
+    <MESSAGE value="Quelques petits changements et ajout de deux commande discord pour les APP_ADMIN" />
+    <option name="LAST_COMMIT_MESSAGE" value="Quelques petits changements et ajout de deux commande discord pour les APP_ADMIN" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/Models/Discord.java</url>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

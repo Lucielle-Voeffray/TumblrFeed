@@ -22,10 +22,22 @@
 
 package app.TumblrFeed;
 
+import Models.Discord;
+import Models.Sql;
+import Models.Tumblr;
+
 public class Main {
     public static void main(String[] args) {
 
+        Discord discord = new Discord();
+        Tumblr tumblr = new Tumblr();
+        Sql sql = new Sql();
 
+        supervisor.setService("Discord", discord);
+        supervisor.setService("Tumblr", tumblr);
+        supervisor.setService("SQL", sql);
+
+        supervisor.launchApp();
 
     }
 }

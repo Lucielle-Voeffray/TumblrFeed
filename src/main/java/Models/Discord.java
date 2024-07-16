@@ -23,6 +23,7 @@
 
 package Models;
 
+import app.TumblrFeed.supervisor;
 import discord4j.core.DiscordClientBuilder;
 import discord4j.core.GatewayDiscordClient;
 import discord4j.core.event.domain.interaction.ChatInputInteractionEvent;
@@ -37,19 +38,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Discord {
+public class Discord implements supervisor {
     private final String token;
-
     private GatewayDiscordClient client;
-    private Tumblr tumblr;
-    private Sql sql;
     long guildId;
 
     public Discord() {
         token = secrets.DISCORD;
         client = null;
-        tumblr = null;
-        sql = null;
         guildId = secrets.ADMIN_SERVER;
     }
 
@@ -67,6 +63,7 @@ public class Discord {
         return success;
     }
 
+    @Override
     public void start() {
         client.on(ChatInputInteractionEvent.class, event -> {
 
@@ -118,7 +115,7 @@ public class Discord {
         int chan = 0;
         try {
             String query = String.format("SELECT pk_channel FROM t_channel WHERE id = %s", channel);
-            chan = Integer.parseInt(sql.select(query).getObject("pk_channel").toString());
+            chan = Integer.parseInt(supervisor.getSql().select(query).getObject("pk_channel").toString());
         } catch (SQLException e) {
             System.out.printf("%s [ERROR] SELECT FAILURE Discord.java method: createSearch | Error Message: %s%n", java.time.LocalDateTime.now(), e);
         }
@@ -278,21 +275,5 @@ public class Discord {
         /*client.getRestClient().getApplicationService()
                 .createGlobalApplicationCommand(applicationId, greetCmdRequest)
                 .subscribe();*/
-    }
-
-    public Tumblr getTumblr() {
-        return tumblr;
-    }
-
-    public void setTumblr(Tumblr tumblr) {
-        this.tumblr = tumblr;
-    }
-
-    public Sql getSql() {
-        return sql;
-    }
-
-    public void setSql(Sql sql) {
-        this.sql = sql;
     }
 }

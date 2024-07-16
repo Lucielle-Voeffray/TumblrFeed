@@ -22,21 +22,28 @@
 
 package Models;
 
+import app.TumblrFeed.supervisor;
+import com.tumblr.jumblr.JumblrClient;
+import com.tumblr.jumblr.types.Post;
 import secrets.secrets;
+
+import java.util.List;
 
 import static java.lang.Thread.sleep;
 
-public class Tumblr {
+public class Tumblr implements supervisor {
 
-    private final String key;
-    private final String secret;
-    private Discord discord;
-    private Sql sql;
+    private final String consumerKey;
+    private final String consumerSecret;
+    private JumblrClient client;
 
     public Tumblr() {
-        this.key = secrets.TUMBLR_KEY;
-        this.secret = secrets.TUMBLR_SECRET;
-        this.discord = null;
+        this.consumerKey = secrets.OAUTH_CONSUMER_KEY;
+        this.consumerSecret = secrets.OAUTH_CONSUMER_SECRET;
+    }
+
+    public void connect() {
+        client = new JumblrClient(consumerKey, consumerSecret);
     }
 
     public void start() {
@@ -50,19 +57,14 @@ public class Tumblr {
         }
     }
 
-    public Discord getDiscord() {
-        return discord;
+    public List<Post> search(String toSearch) {
+        return client.tagged(toSearch);
     }
 
-    public void setDiscord(Discord discord) {
-        this.discord = discord;
-    }
+    private boolean checkLastPostSent() {
+        boolean success = false;
 
-    public Sql getSql() {
-        return sql;
-    }
 
-    public void setSql(Sql sql) {
-        this.sql = sql;
+        return success;
     }
 }
