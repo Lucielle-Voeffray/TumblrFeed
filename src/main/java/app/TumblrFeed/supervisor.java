@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public interface supervisor {
-    Map<String, supervisor> services = new HashMap<>(4);
+    Map<String, supervisor> services = new HashMap<>();
 
     static void setService(String key, supervisor object) {
         services.put(key, object);

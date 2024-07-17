@@ -24,15 +24,21 @@
 package Models;
 
 import app.TumblrFeed.supervisor;
+import com.tumblr.jumblr.types.Post;
+import discord4j.common.util.Snowflake;
 import discord4j.core.DiscordClientBuilder;
 import discord4j.core.GatewayDiscordClient;
 import discord4j.core.event.domain.interaction.ChatInputInteractionEvent;
 import discord4j.core.object.command.ApplicationCommandInteractionOption;
 import discord4j.core.object.command.ApplicationCommandInteractionOptionValue;
 import discord4j.core.object.command.ApplicationCommandOption;
+import discord4j.core.object.entity.channel.MessageChannel;
 import discord4j.discordjson.json.ApplicationCommandOptionData;
 import discord4j.discordjson.json.ApplicationCommandRequest;
+import org.jetbrains.annotations.NotNull;
 import secrets.secrets;
+import services.Error;
+import services.LogType;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -92,7 +98,7 @@ public class Discord implements supervisor {
                             .map(ApplicationCommandInteractionOptionValue::asString)
                             .get();
 
-                    if (createSearch(search, searchName, userID, server, channel)) {
+                    if (supervisor.getSql().createSearch(search, searchName, userID, server, channel)) {
                         event.reply("Your search has been successfully added to this channel");
                     } else {
                         event.reply("Something went wrong, please try again and if it persists consider adding an issue on https://github.com/Lucielle-Voeffray/TumblrFeed/issues");
@@ -109,20 +115,29 @@ public class Discord implements supervisor {
         return String.format("Hallo du lieb %s", name);
     }
 
-    public boolean createSearch(String search, String searchName, String userID, String server, String channel) {
-        boolean success = false;
 
-        int chan = 0;
-        try {
-            String query = String.format("SELECT pk_channel FROM t_channel WHERE id = %s", channel);
-            chan = Integer.parseInt(supervisor.getSql().select(query).getObject("pk_channel").toString());
-        } catch (SQLException e) {
-            System.out.printf("%s [ERROR] SELECT FAILURE Discord.java method: createSearch | Error Message: %s%n", java.time.LocalDateTime.now(), e);
+    public void sendPosts(@NotNull List<Post> posts, @NotNull String channelID, @NotNull String searchName) {
+
+        if (posts.get(0) != null) {
+            Sql sql = supervisor.getSql();
+            String text = "An error occurred: search: %s URL: %s";
+
+            try {
+                text = sql.select("SELECT anglais FROM t_text WHERE pk_text = 1").getString("anglais");
+            } catch (SQLException e) {
+                Error.report(LogType.ERROR, "Discord.java", "sendPosts()", 0, e);
+            }
+
+            String finalText = text;
+
+            for (int i = posts.size(); i >= 0; i++) {
+                int finalI = i;
+                client.getChannelById(Snowflake.of(channelID))
+                        .ofType(MessageChannel.class)
+                        .flatMap(channel -> channel.createMessage(String.format(finalText, searchName, posts.get(finalI).getPostUrl())))
+                        .subscribe();
+            }
         }
-        System.out.println(chan);
-        // sql.update("INSERT INTO t_search (searchName)");
-
-        return success;
     }
 
     public void build() {

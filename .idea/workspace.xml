@@ -8,14 +8,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="92978bf1-93b6-4998-bcdf-f5ae45362079" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/app/TumblrFeed/supervisor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/services/Error.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/services/LogType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/AllTexts.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Models/Discord.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Models/Discord.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Models/Sql.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Models/Sql.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Models/Tumblr.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Models/Tumblr.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/TumblrFeed/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/TumblrFeed/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/sql/tumblrFeed.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/sql/tumblrFeed.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/app/TumblrFeed/supervisor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/TumblrFeed/supervisor.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,6 +27,7 @@
       <list>
         <option value="Interface" />
         <option value="Class" />
+        <option value="Enum" />
       </list>
     </option>
   </component>
@@ -35,6 +36,9 @@
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
@@ -46,26 +50,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
-    &quot;Application.app.TumblrFeed.Main.executor&quot;: &quot;Run&quot;,
-    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.JavaDocs&quot;: &quot;true&quot;,
-    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/anya/Documents/temp/maven/pro-TumblrFeed/TumblrFeed/src/main/java/secrets&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.42222223&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Main.executor": "Run",
+    "Application.app.TumblrFeed.Main.executor": "Run",
+    "Downloaded.Files.Path.Enabled": "false",
+    "Repository.Attach.Annotations": "false",
+    "Repository.Attach.JavaDocs": "true",
+    "Repository.Attach.Sources": "false",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/home/anya/Documents/temp/maven/pro-TumblrFeed/TumblrFeed/src/main/java/secrets",
+    "project.structure.last.edited": "Libraries",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.42222223",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "preferences.pluginManager"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/java/secrets" />
@@ -258,7 +263,15 @@
       <option name="project" value="LOCAL" />
       <updated>1720786813234</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="Réorganisation du code pour ajouter un supervisor et découverte de Jumblr et son flagrant manque de documentation claire">
+      <option name="closed" value="true" />
+      <created>1721156784634</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1721156784634</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -290,7 +303,8 @@
     <MESSAGE value="Turns out je pouvais pas envoyer de mails lol, maintenant c'est bon" />
     <MESSAGE value="C'est bon mon chiffrement se fait correctement" />
     <MESSAGE value="Quelques petits changements et ajout de deux commande discord pour les APP_ADMIN" />
-    <option name="LAST_COMMIT_MESSAGE" value="Quelques petits changements et ajout de deux commande discord pour les APP_ADMIN" />
+    <MESSAGE value="Réorganisation du code pour ajouter un supervisor et découverte de Jumblr et son flagrant manque de documentation claire" />
+    <option name="LAST_COMMIT_MESSAGE" value="Réorganisation du code pour ajouter un supervisor et découverte de Jumblr et son flagrant manque de documentation claire" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />

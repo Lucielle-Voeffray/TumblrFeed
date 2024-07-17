@@ -26,12 +26,16 @@ import app.TumblrFeed.supervisor;
 import org.jetbrains.annotations.NotNull;
 import org.postgresql.ds.PGSimpleDataSource;
 import secrets.secrets;
+import services.Error;
+import services.Hasher;
+import services.LogType;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class Sql implements supervisor {
 
@@ -62,12 +66,11 @@ public class Sql implements supervisor {
             connection = datasource.getConnection();
             success = true;
 
-            // TODO add success log
-            System.out.println("success");
+            Exception e = new Exception("Connected and Nicely");
+            Error.report(LogType.SUCCESS, "Sql.java", "select()", 0, e);
 
         } catch (Exception e) {
-            // TODO add error log
-            System.out.println(e);
+            Error.report(LogType.ERROR, "Sql.java", "connect()", 0, e);
         }
 
         return success;
@@ -75,119 +78,140 @@ public class Sql implements supervisor {
 
     /**
      * @return true if success, false if failure
-     * @description: Creates the DataSource and assigns it to dataSource
+     * @Description: Creates the DataSource and assigns it to dataSource
      */
-    private boolean createDataSource() {
-        boolean success = false;
+    private void createDataSource() {
 
-        try {
-            final String url = fqdn + "?user=" + user + "&password=" + password;
-            PGSimpleDataSource source = new PGSimpleDataSource();
-            source.setUrl(url);
-            datasource = source;
-            success = true;
-            // TODO ADD log success
+        final String url = fqdn + "?user=" + user + "&password=" + password;
+        PGSimpleDataSource source = new PGSimpleDataSource();
+        source.setUrl(url);
+        datasource = source;
 
-        } catch (Exception e) {
-            // TODO add log error
-            System.out.println(e);
-        }
-
-        return success;
     }
 
     /**
      * @param query: full SELECT query
      * @return Object ResultSet
      */
-    public @NotNull ResultSet select(String query) {
+    public ArrayList<ArrayList> select(@NotNull String query) {
+        ArrayList<ArrayList> ret;
+
         ResultSet result = null;
+        int columnCount = 0;
 
         PreparedStatement stmt = null;
 
         try {
             stmt = connection.prepareStatement(query);
-            // TODO add success log
         } catch (SQLException e) {
-            // TODO add error log
-            System.out.println(e);
+            Error.report(LogType.ERROR, "Sql.java", "select()", 0, e);
         }
 
         if (stmt != null) {
             try {
                 result = stmt.executeQuery();
-                // TODO add success log
+                columnCount = result.getMetaData().getColumnCount();
             } catch (SQLException e) {
-                // TODO add error log
+                Error.report(LogType.ERROR, "Sql.java", "select()", 1, e);
                 String code = e.getSQLState();
-                switch (code) {
-                    case "08000":
-                        boolean connected = connect();
-                        if (connected) {
-                            try {
-                                stmt = connection.prepareStatement(query);
-                                result = stmt.executeQuery();
-                            } catch (SQLException r) {
-                                // TODO add error log
-                            }
+
+                if (code.equals("08000")) {
+                    boolean connected = connect();
+                    if (connected) {
+                        try {
+                            stmt = connection.prepareStatement(query);
+                            result = stmt.executeQuery();
+                        } catch (SQLException r) {
+                            Error.report(LogType.ERROR, "Sql.java", "connect()", 2, r);
                         }
-                        break;
-                    case "42601":
-                        // TODO add error log
-                        System.out.println(e);
-                    default:
-                        // TODO add error log
-                        System.out.println("SQL failed with error code: " + code + " : " + e);
+                    }
+                } else {
+                    Error.report(LogType.ERROR, "Sql.java", "connect()", 3, e);
                 }
             }
         }
-        return result;
+
+        ret = new ArrayList<>(columnCount);
+        try {
+            while (result.next()) {
+                int i = 1;
+                while (i <= columnCount) {
+                    result.getArray(i++);
+                }
+            }
+        } catch (SQLException e) {
+            Error.report(LogType.ERROR, "Sql.java", "connect()", 4, e);
+        }
+
+        return ret;
     }
 
     /**
      * @param query full INSERT/UPDATE/DELETE query
      * @return int representing the number of INSERT/UPDATE/DELETE done
      */
-    public int update(String query) {
+    public int update(@NotNull String query) {
         int success = 0;
 
-        if (query != null) {
-            PreparedStatement stmt = null;
-            try {
-                stmt = connection.prepareStatement(query);
-                // TODO add success log
-            } catch (Exception e) {
-                // TODO add error log
-            }
+        PreparedStatement stmt = null;
+        try {
+            stmt = connection.prepareStatement(query);
+        } catch (Exception e) {
+            Error.report(LogType.ERROR, "Sql.java", "connect()", 0, e);
+        }
 
-            if (stmt != null) {
-                try {
-                    success = stmt.executeUpdate();
-                    // TODO add success log
-                } catch (SQLException e) {
-                    // TODO add error log
-                    String code = e.getSQLState();
-                    switch (code) {
-                        case "08000":
-                            boolean connected = connect();
-                            if (connected) {
-                                try {
-                                    stmt = connection.prepareStatement(query);
-                                } catch (SQLException r) {
-                                    // TODO add error log
-                                }
-                            }
-                            break;
-                        case "42601":
-                            // TODO add error log
-                            System.out.println(e);
-                        default:
-                            // TODO add error log
-                            System.out.println("SQL failed with error code: " + code);
+        if (stmt != null) {
+            try {
+                success = stmt.executeUpdate();
+            } catch (SQLException e) {
+                Error.report(LogType.ERROR, "Sql.java", "connect()", 1, e);
+                String code = e.getSQLState();
+                if (code.equals("08000")) {
+                    if (connect()) {
+                        try {
+                            stmt = connection.prepareStatement(query);
+                        } catch (SQLException r) {
+                            Error.report(LogType.ERROR, "Sql.java", "connect()", 2, r);
+                        }
                     }
+                } else {
+                    Error.report(LogType.ERROR, "Sql.java", "connect()", 3, e);
                 }
             }
         }
         return success;
+    }
+
+    public boolean createSearch(String search, String searchName, String userID, String server, String channel) {
+        boolean success = false;
+
+        if (isSearchNameAvailable(userID, searchName)) {
+            String fkChannel = String.format("SELECT pk_channel FROM t_channel WHERE id = %s", channel);
+            String fkUser = String.format("SELECT pk_user FROM t_user WHERE hashedName = %s", Hasher.hash(userID));
+            String lastPost = supervisor.getTumblr().getNewestPost(search).getId().toString();
+            update(String.format("INSERT INTO t_search (searchName, fk_channel, fk_user, paused, hashtagName, lastSharedPost) VALUES (%s, %s, %s, false, %s, %s)", searchName, fkChannel, fkUser, search, lastPost));
+        }
+
+        return success;
+    }
+
+    private boolean isSearchNameAvailable(String userID, String searchName) {
+        boolean isAvailable = false;
+        int numberOfRows = -1;
+        ResultSet result = select(String.format("SELECT search.searchName FROM t_search AS search JOIN t_user AS user ON user.pk_user = search.fk_search WHERE user.hashedName = %s AND search.searchName = %s", Hasher.hash(userID), searchName));
+
+        try {
+            result.last();
+            numberOfRows = result.getRow();
+            result.first();
+        } catch (SQLException e) {
+            Error.report(LogType.ERROR, "Sql.java", "isSearchNameUsed()", 1, e);
+        }
+
+        if (numberOfRows == 0) {
+            isAvailable = true;
+        }
+
+        return isAvailable;
     }
 }
