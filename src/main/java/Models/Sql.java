@@ -195,7 +195,7 @@ public class Sql implements supervisor {
             createUserAccount(userID);
         }
 
-        if (isSearchNameAvailable(userID, searchName)) {
+        if (isSearchNameAvailable(userID, searchName) && !isUserPaused(userID)) {
             String fkChannel = String.format("SELECT pk_channel FROM t_channel WHERE id = %s", channel);
             String fkUser = String.format("SELECT pk_user FROM t_user WHERE hashedName = %s", Hasher.hash(userID));
             String lastPost = supervisor.getTumblr().getNewestPost(search).getId().toString();
@@ -203,6 +203,10 @@ public class Sql implements supervisor {
         }
 
         return success;
+    }
+
+    private boolean isUserPaused(String userID) {
+        return select(String.format("SELECT paused FROM t_user WHERE hashedName = %s", Hasher.hash(userID))).get(0).get("disabled").equalsIgnoreCase("true");
     }
 
     private boolean createUserAccount(String userID) {
@@ -214,7 +218,14 @@ public class Sql implements supervisor {
 
         if (isAppAdmin(userWhoAsked)) {
             int upD = update(String.format("UPDATE t_user SET disabled = true WHERE hashedName = %s", Hasher.hash(userToPause)));
-            if (upD == 1) {
+
+            String pkUser = select(String.format("SELECT paused FROM t_search WHERE hashedName = %s", Hasher.hash(userToPause))).get(0).get("pk_user");
+
+            int numberOfSearches = select(String.format("SELECT paused, pk_search FROM t_search WHERE fk_user = %s", pkUser)).size();
+
+            upD += update(String.format("UPDATE t_search SET paused = true WHERE fk_user = %s", pkUser));
+
+            if (upD == 1 + numberOfSearches) {
                 success = true;
             }
         }

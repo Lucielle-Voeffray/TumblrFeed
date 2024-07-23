@@ -9,11 +9,7 @@
   <component name="ChangeListManager">
     <list default="true" id="92978bf1-93b6-4998-bcdf-f5ae45362079" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Models/Discord.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Models/Discord.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Models/Sql.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Models/Sql.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Models/Tumblr.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Models/Tumblr.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/TumblrFeed/supervisor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/TumblrFeed/supervisor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/AllTexts.md" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/AllTexts.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -269,7 +265,15 @@
       <option name="project" value="LOCAL" />
       <updated>1721156784634</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="On avance, on dira">
+      <option name="closed" value="true" />
+      <created>1721740410591</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1721740410591</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -302,7 +306,8 @@
     <MESSAGE value="C'est bon mon chiffrement se fait correctement" />
     <MESSAGE value="Quelques petits changements et ajout de deux commande discord pour les APP_ADMIN" />
     <MESSAGE value="Réorganisation du code pour ajouter un supervisor et découverte de Jumblr et son flagrant manque de documentation claire" />
-    <option name="LAST_COMMIT_MESSAGE" value="Réorganisation du code pour ajouter un supervisor et découverte de Jumblr et son flagrant manque de documentation claire" />
+    <MESSAGE value="On avance, on dira" />
+    <option name="LAST_COMMIT_MESSAGE" value="On avance, on dira" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
