@@ -36,6 +36,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 public class Sql implements supervisor {
 
@@ -93,8 +96,8 @@ public class Sql implements supervisor {
      * @param query: full SELECT query
      * @return Object ResultSet
      */
-    public ArrayList<ArrayList> select(@NotNull String query) {
-        ArrayList<ArrayList> ret;
+    public ArrayList<Map<String, String>> select(@NotNull String query) {
+        ArrayList<Map<String, String>> ret;
 
         ResultSet result = null;
         int columnCount = 0;
@@ -134,10 +137,13 @@ public class Sql implements supervisor {
         ret = new ArrayList<>(columnCount);
         try {
             while (result.next()) {
-                int i = 1;
-                while (i <= columnCount) {
-                    result.getArray(i++);
+                Map<String, String> map = new HashMap<>();
+                for (int i = 0; i < columnCount; i++) {
+                    String key = result.getMetaData().getColumnName(i);
+                    String value = result.getString(i);
+                    map.put(key, value);
                 }
+                ret.add(map);
             }
         } catch (SQLException e) {
             Error.report(LogType.ERROR, "Sql.java", "connect()", 4, e);
@@ -185,6 +191,10 @@ public class Sql implements supervisor {
     public boolean createSearch(String search, String searchName, String userID, String server, String channel) {
         boolean success = false;
 
+        if (!userAccountExists(userID)) {
+            createUserAccount(userID);
+        }
+
         if (isSearchNameAvailable(userID, searchName)) {
             String fkChannel = String.format("SELECT pk_channel FROM t_channel WHERE id = %s", channel);
             String fkUser = String.format("SELECT pk_user FROM t_user WHERE hashedName = %s", Hasher.hash(userID));
@@ -195,18 +205,36 @@ public class Sql implements supervisor {
         return success;
     }
 
+    private boolean createUserAccount(String userID) {
+        return update(String.format("INSERT INTO t_user (hashedName, disabled, app_admin) VALUES (%s, false, false)", Hasher.hash(userID))) == 1;
+    }
+
+    private boolean pauseUser(String userToPause, String userWhoAsked) {
+        boolean success = false;
+
+        if (isAppAdmin(userWhoAsked)) {
+            int upD = update(String.format("UPDATE t_user SET disabled = true WHERE hashedName = %s", Hasher.hash(userToPause)));
+            if (upD == 1) {
+                success = true;
+            }
+        }
+
+        return success;
+    }
+
+    private boolean isAppAdmin(String userID) {
+        return select(String.format("SELECT app_admin FROM t_user WHERE hashedName = %s", Hasher.hash(userID))).get(0).get("app_admin").equalsIgnoreCase("true");
+    }
+
+    private boolean userAccountExists(String userID) {
+        return Objects.equals(select(String.format("SELECT id FROM t_user WHERE id = %s", Hasher.hash(userID))).get(0).get("id"), Hasher.hash(userID));
+    }
+
     private boolean isSearchNameAvailable(String userID, String searchName) {
         boolean isAvailable = false;
-        int numberOfRows = -1;
-        ResultSet result = select(String.format("SELECT search.searchName FROM t_search AS search JOIN t_user AS user ON user.pk_user = search.fk_search WHERE user.hashedName = %s AND search.searchName = %s", Hasher.hash(userID), searchName));
+        ArrayList<Map<String, String>> result = select(String.format("SELECT search.searchName FROM t_search AS search JOIN t_user AS user ON user.pk_user = search.fk_search WHERE user.hashedName = %s AND search.searchName = %s", Hasher.hash(userID), searchName));
 
-        try {
-            result.last();
-            numberOfRows = result.getRow();
-            result.first();
-        } catch (SQLException e) {
-            Error.report(LogType.ERROR, "Sql.java", "isSearchNameUsed()", 1, e);
-        }
+        int numberOfRows = result.size();
 
         if (numberOfRows == 0) {
             isAvailable = true;

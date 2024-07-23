@@ -37,10 +37,7 @@ import discord4j.discordjson.json.ApplicationCommandOptionData;
 import discord4j.discordjson.json.ApplicationCommandRequest;
 import org.jetbrains.annotations.NotNull;
 import secrets.secrets;
-import services.Error;
-import services.LogType;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -99,20 +96,21 @@ public class Discord implements supervisor {
                             .get();
 
                     if (supervisor.getSql().createSearch(search, searchName, userID, server, channel)) {
-                        event.reply("Your search has been successfully added to this channel");
+                        event.reply(supervisor.getSql().select("SELECT english FROM t_text WHERE pk_text = 3").get(0).get("english"));
                     } else {
-                        event.reply("Something went wrong, please try again and if it persists consider adding an issue on https://github.com/Lucielle-Voeffray/TumblrFeed/issues");
+                        event.reply(supervisor.getSql().select("SELECT english FROM t_text WHERE pk_text = 2").get(0).get("english"));
                     }
 
 
                 default:
-                    return event.reply("Something went wrong :smiling_face_with_tear:");
+                    return event.reply(supervisor.getSql().select("SELECT english FROM t_text WHERE pk_text = 2").get(0).get("english"));
             }
         }).subscribe();
     }
 
     public String greet(String name) {
-        return String.format("Hallo du lieb %s", name);
+        String greetings = supervisor.getSql().select("SELECT english FROM t_text WHERE pk_text = 2").get(0).get("english");
+        return String.format(greetings, name);
     }
 
 
@@ -120,21 +118,13 @@ public class Discord implements supervisor {
 
         if (posts.get(0) != null) {
             Sql sql = supervisor.getSql();
-            String text = "An error occurred: search: %s URL: %s";
-
-            try {
-                text = sql.select("SELECT anglais FROM t_text WHERE pk_text = 1").getString("anglais");
-            } catch (SQLException e) {
-                Error.report(LogType.ERROR, "Discord.java", "sendPosts()", 0, e);
-            }
-
-            String finalText = text;
+            final String text = sql.select("SELECT english FROM t_text WHERE pk_text = 1").get(0).get("english");
 
             for (int i = posts.size(); i >= 0; i++) {
                 int finalI = i;
                 client.getChannelById(Snowflake.of(channelID))
                         .ofType(MessageChannel.class)
-                        .flatMap(channel -> channel.createMessage(String.format(finalText, searchName, posts.get(finalI).getPostUrl())))
+                        .flatMap(channel -> channel.createMessage(String.format(text, searchName, posts.get(finalI).getPostUrl())))
                         .subscribe();
             }
         }

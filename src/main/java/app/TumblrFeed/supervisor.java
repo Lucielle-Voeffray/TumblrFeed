@@ -44,7 +44,6 @@ public interface supervisor {
             success = false;
         }
 
-
         return success;
     }
 
