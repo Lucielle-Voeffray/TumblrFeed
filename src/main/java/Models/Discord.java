@@ -37,6 +37,8 @@ import discord4j.discordjson.json.ApplicationCommandOptionData;
 import discord4j.discordjson.json.ApplicationCommandRequest;
 import org.jetbrains.annotations.NotNull;
 import secrets.secrets;
+import services.Error;
+import services.LogType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,9 +74,9 @@ public class Discord implements supervisor {
 
             String userID = event.getInteraction().getUser().getId().asString();
 
-            String server = event.getInteraction().getGuildId().get().asString();
+            String serverID = event.getInteraction().getGuildId().get().asString();
 
-            String channel = event.getInteraction().getChannelId().asString();
+            String channelID = event.getInteraction().getChannelId().asString();
 
             switch (event.getCommandName().toLowerCase()) {
                 case "greet":
@@ -95,12 +97,9 @@ public class Discord implements supervisor {
                             .map(ApplicationCommandInteractionOptionValue::asString)
                             .get();
 
-                    if (supervisor.getSql().createSearch(search, searchName, userID, server, channel)) {
-                        event.reply(supervisor.getSql().select("SELECT english FROM t_text WHERE pk_text = 3").get(0).get("english"));
-                    } else {
-                        event.reply(supervisor.getSql().select("SELECT english FROM t_text WHERE pk_text = 2").get(0).get("english"));
-                    }
+                    String message = createSearch(search, searchName, userID, serverID, channelID);
 
+                    return event.reply(message);
 
                 default:
                     return event.reply(supervisor.getSql().select("SELECT english FROM t_text WHERE pk_text = 2").get(0).get("english"));
@@ -128,6 +127,25 @@ public class Discord implements supervisor {
                         .subscribe();
             }
         }
+    }
+
+    public String createSearch(String searchName, String toSearch, String userID, String channelID, String serverID) {
+        String message = supervisor.getSql().select("SELECT english FROM t_text WHERE pk_text = 2").get(0).get("english");
+        ;
+
+        int isSearchCreationSuccessful = supervisor.getSql().createSearch(toSearch, searchName, userID, serverID, channelID);
+
+        if (isSearchCreationSuccessful == 0) {
+            message = supervisor.getSql().select("SELECT english FROM t_text WHERE pk_text = 3").get(0).get("english");
+        } else if (isSearchCreationSuccessful == 2) {
+            message = supervisor.getSql().select("SELECT english FROM t_text WHERE pk_text = 5").get(0).get("english");
+            Error.report(LogType.ERROR, "Discord.java", "createSearch", 0, message);
+        } else if (isSearchCreationSuccessful == 3) {
+            message = supervisor.getSql().select("SELECT english FROM t_text WHERE pk_text = 6").get(0).get("english");
+            Error.report(LogType.ERROR, "Discord.java", "createSearch", 1, message);
+        }
+
+        return message;
     }
 
     public void build() {
@@ -233,6 +251,12 @@ public class Discord implements supervisor {
                 .description("[Server Admin only] If you want to delete all data concerning your server")
                 .build();
 
+        // Build contactcreator
+        ApplicationCommandRequest createContactCreator = ApplicationCommandRequest.builder()
+                .name("contactcreator")
+                .description("Will answer you with a way to contact the person responsible of the bot")
+                .build();
+
         //App_admin commands (Guild commands on secrets.ADMIN_SERVER)
         // Build erasedatafromuser
         ApplicationCommandRequest createEraseDataFromUser = ApplicationCommandRequest.builder()
@@ -257,7 +281,7 @@ public class Discord implements supervisor {
                 .description("[APP_ADMIN ONLY] Will stop the bot")
                 .build();
 
-        ApplicationCommandRequest[] commands = new ApplicationCommandRequest[]{greetCmdRequest, createListMySearches, createSearchPause, createSearchDeletion, createSearchRequest, createListServerSearches, createDeleteMyData, createDeleteServerData};
+        ApplicationCommandRequest[] commands = new ApplicationCommandRequest[]{greetCmdRequest, createListMySearches, createSearchPause, createSearchDeletion, createSearchRequest, createListServerSearches, createDeleteMyData, createDeleteServerData, createContactCreator};
         ApplicationCommandRequest[] appAdminCommands = new ApplicationCommandRequest[]{createEraseDataFromUser, createPauseUser, createExitGracefully};
 
         // Create guild command with discord

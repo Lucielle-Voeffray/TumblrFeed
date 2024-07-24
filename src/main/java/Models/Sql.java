@@ -188,21 +188,70 @@ public class Sql implements supervisor {
         return success;
     }
 
-    public boolean createSearch(String search, String searchName, String userID, String server, String channel) {
-        boolean success = false;
+    /**
+     * @return 0 for success, 1 for something went wrong, 2 if searchName is unavailable, 3 if userIsPaused
+     */
+    public int createSearch(String search, String searchName, String userID, String serverID, String channelID) {
+        int success = 1;
 
         if (!userAccountExists(userID)) {
             createUserAccount(userID);
         }
 
+        if (!isServerRegistered(serverID)) {
+            createServer(serverID);
+        }
+
+        if (!isChannelRegistered(channelID)) {
+            createChannel(channelID, serverID);
+        }
+
         if (isSearchNameAvailable(userID, searchName) && !isUserPaused(userID)) {
-            String fkChannel = String.format("SELECT pk_channel FROM t_channel WHERE id = %s", channel);
+            String fkChannel = String.format("SELECT pk_channel FROM t_channel WHERE id = %s", channelID);
             String fkUser = String.format("SELECT pk_user FROM t_user WHERE hashedName = %s", Hasher.hash(userID));
             String lastPost = supervisor.getTumblr().getNewestPost(search).getId().toString();
             update(String.format("INSERT INTO t_search (searchName, fk_channel, fk_user, paused, hashtagName, lastSharedPost) VALUES (%s, %s, %s, false, %s, %s)", searchName, fkChannel, fkUser, search, lastPost));
+            success = 0;
+        } else if (!isSearchNameAvailable(userID, searchName)) {
+            success = 2;
+        } else if (isUserPaused(userID)) {
+            success = 3;
         }
 
         return success;
+    }
+
+    private boolean createChannel(String channelID, String serverID) {
+        boolean success = false;
+
+        String pkServer = select(String.format("SELECT pk_server FROM t_server WHERE id = %s", serverID)).get(0).get("id");
+        int nbrUpdate = update(String.format("INSERT INTO t_channel (id, fk_server) VALUES (%s, %s)", channelID, pkServer));
+
+        if (nbrUpdate == 1) {
+            success = true;
+        }
+
+        return success;
+    }
+
+    private boolean isChannelRegistered(String channelID) {
+        return Objects.equals(select(String.format("SELECT id FROM t_channel WHERE id = %s", channelID)).get(0).get("id"), channelID);
+    }
+
+    private boolean createServer(String serverID) {
+        boolean success = false;
+
+        int nbrUpdate = update(String.format("INSERT INTO t_server (id) VALUES (%s)", serverID));
+
+        if (nbrUpdate == 1) {
+            success = true;
+        }
+
+        return success;
+    }
+
+    private boolean isServerRegistered(String serverID) {
+        return Objects.equals(select(String.format("SELECT id FROM t_server WHERE id = %s", serverID)).get(0).get("id"), serverID);
     }
 
     private boolean isUserPaused(String userID) {

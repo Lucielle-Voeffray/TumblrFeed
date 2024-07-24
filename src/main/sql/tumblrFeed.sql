@@ -23,7 +23,6 @@ CREATE DATABASE db_TumblrFeed;
 
 CREATE TABLE IF NOT EXISTS t_server (
     pk_server serial,
-    serverName varchar(100) NOT NULL,
     id varchar(30) NOT NULL,
 
     PRIMARY KEY (pk_server)
@@ -41,7 +40,6 @@ CREATE TABLE IF NOT EXISTS t_user (
 CREATE TABLE IF NOT EXISTS t_channel (
     pk_channel serial,
     id varchar(30) NOT NULL,
-    channelName varchar(100) NOT NULL,
     fk_server integer NOT NULL,
 
     PRIMARY KEY (pk_channel),

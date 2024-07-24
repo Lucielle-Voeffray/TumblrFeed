@@ -102,4 +102,18 @@ public class Tumblr implements supervisor {
     public Post getNewestPost(String toSearch) {
         return search(toSearch).get(0);
     }
+
+    public List<Post> firstSearch(String toSearch) {
+        List<Post> ret = new ArrayList<>();
+        List<Post> posts = search(toSearch);
+
+        for (int i = 0; i < 10; i++) {
+            ret.add(posts.get(i));
+        }
+
+        return ret;
+    }
+
 }
+
+
