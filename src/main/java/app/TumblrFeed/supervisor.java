@@ -3,6 +3,8 @@ package app.TumblrFeed;
 import Models.Discord;
 import Models.Sql;
 import Models.Tumblr;
+import services.Error;
+import services.LogType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,6 +44,16 @@ public interface supervisor {
 
         if (!getDiscord().connect()) {
             success = false;
+        }
+
+        getTumblr().connect();
+
+        if (success) {
+            getSql().start();
+            getDiscord().start();
+            getTumblr().start();
+        } else {
+            Error.report(LogType.ERROR, "supervisor.java", "launchApp", 0, "Something went wrong");
         }
 
         return success;

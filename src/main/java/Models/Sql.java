@@ -57,8 +57,8 @@ public class Sql implements supervisor {
     }
 
     /**
-     * @description: Connects to the Database.
-     * @Needs: The secrets.secrets.java file to be created and filled according to the documentation
+     * Connects to the Database.
+     * @requirements The secrets.secrets.java file to be created and filled according to the documentation
      */
     public boolean connect() {
         boolean success = false;
@@ -80,8 +80,8 @@ public class Sql implements supervisor {
     }
 
     /**
+     * Creates the DataSource and assigns it to dataSource
      * @return true if success, false if failure
-     * @Description: Creates the DataSource and assigns it to dataSource
      */
     private void createDataSource() {
 
@@ -93,8 +93,8 @@ public class Sql implements supervisor {
     }
 
     /**
-     * @param query: full SELECT query
-     * @return Object ResultSet
+     * @param query full SELECT query
+     * @return ArrayList of Maps with < columnName, value >
      */
     public ArrayList<Map<String, String>> select(@NotNull String query) {
         ArrayList<Map<String, String>> ret;
