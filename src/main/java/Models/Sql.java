@@ -79,6 +79,14 @@ public class Sql implements supervisor {
         return success;
     }
 
+    public void disconnect() {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            Error.report(LogType.ERROR, "Sql.java", "disconnect()", 0, e);
+        }
+    }
+
     /**
      * Creates the DataSource and assigns it to dataSource
      * @return true if success, false if failure
@@ -125,11 +133,11 @@ public class Sql implements supervisor {
                             stmt = connection.prepareStatement(query);
                             result = stmt.executeQuery();
                         } catch (SQLException r) {
-                            Error.report(LogType.ERROR, "Sql.java", "connect()", 2, r);
+                            Error.report(LogType.ERROR, "Sql.java", "select()", 2, r);
                         }
                     }
                 } else {
-                    Error.report(LogType.ERROR, "Sql.java", "connect()", 3, e);
+                    Error.report(LogType.ERROR, "Sql.java", "select()", 3, e);
                 }
             }
         }
@@ -146,7 +154,19 @@ public class Sql implements supervisor {
                 ret.add(map);
             }
         } catch (SQLException e) {
-            Error.report(LogType.ERROR, "Sql.java", "connect()", 4, e);
+            Error.report(LogType.ERROR, "Sql.java", "select()", 4, e);
+        }
+
+        try {
+            stmt.close();
+        } catch (SQLException e) {
+            Error.report(LogType.ERROR, "Sql.java", "select()", 5, e);
+        }
+
+        try {
+            result.close();
+        } catch (SQLException e) {
+            Error.report(LogType.ERROR, "Sql.java", "select()", 6, e);
         }
 
         return ret;

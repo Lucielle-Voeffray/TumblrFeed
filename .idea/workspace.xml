@@ -9,8 +9,12 @@
   <component name="ChangeListManager">
     <list default="true" id="92978bf1-93b6-4998-bcdf-f5ae45362079" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Models/Discord.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Models/Discord.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Models/Sql.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Models/Sql.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Models/Tumblr.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Models/Tumblr.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/app/TumblrFeed/supervisor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/TumblrFeed/supervisor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/services/Mail.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/services/Mail.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/AllTexts.md" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/AllTexts.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -282,7 +286,15 @@
       <option name="project" value="LOCAL" />
       <updated>1721818588809</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="Boop">
+      <option name="closed" value="true" />
+      <created>1721819341092</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1721819341092</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -317,7 +329,8 @@
     <MESSAGE value="Réorganisation du code pour ajouter un supervisor et découverte de Jumblr et son flagrant manque de documentation claire" />
     <MESSAGE value="On avance, on dira" />
     <MESSAGE value="Un jour j'apprendrai à utiliser GIT correctement, d'ici là ça sera toujours des messages goofy lol" />
-    <option name="LAST_COMMIT_MESSAGE" value="Un jour j'apprendrai à utiliser GIT correctement, d'ici là ça sera toujours des messages goofy lol" />
+    <MESSAGE value="Boop" />
+    <option name="LAST_COMMIT_MESSAGE" value="Boop" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />

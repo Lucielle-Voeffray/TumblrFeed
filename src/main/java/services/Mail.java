@@ -22,6 +22,7 @@
 
 package services;
 
+import app.TumblrFeed.supervisor;
 import org.jetbrains.annotations.NotNull;
 import secrets.secrets;
 
@@ -40,7 +41,7 @@ public class Mail {
     private static final String DESTINATION_MAIL = secrets.DESTINATION_EMAIL;
     private static final String HOST = secrets.SMTP_SERVER;
 
-    public static boolean sendMail(String discordUsername, String userID, String searchName, String search, String serverName, String serverID, String channelName, String channelID) {
+    public static boolean sendMail(String discordUsername, String userID, String searchName, String search, String serverID, String channelID) {
         boolean success = false;
 
         Properties properties = System.getProperties();
@@ -49,7 +50,9 @@ public class Mail {
 
         Session session = Session.getDefaultInstance(properties);
 
-        String safeContent = getContent(discordUsername, userID, searchName, search, serverName, serverID, channelName, channelID);
+        String safeContent = getContent(discordUsername, userID, searchName, search, serverID, channelID);
+
+        String subject = supervisor.getSql().select("SELECT english FROM t_text WHERE pk = 8").get(0).get("english");
 
         try {
             properties.setProperty("mail.user", USER_MAIL);
@@ -61,7 +64,7 @@ public class Mail {
 
             message.addRecipient(MimeMessage.RecipientType.TO, new InternetAddress(DESTINATION_MAIL));
 
-            message.setSubject("[EMERGENCY] use of an illegal term in their search!");
+            message.setSubject(subject);
 
             message.setText(safeContent);
 
@@ -75,16 +78,10 @@ public class Mail {
         return success;
     }
 
-    public static @NotNull String getContent(String discordUsername, String userID, String searchName, String search, String serverName, String serverID, String channelName, String channelID) {
+    public static @NotNull String getContent(String discordUsername, String userID, String searchName, String search, String serverID, String channelID) {
         String hash = Hasher.hash(discordUsername);
-        String content =
-                String.format("%s tried to create a search with an illegal word ! %n", discordUsername) +
-                        String.format("Discord Username / Hash / id : %s / %s / %s%n", discordUsername, hash, userID) +
-                        String.format("Discord Server / Server ID : %s / %s%n", serverName, serverID) +
-                        String.format("Discord Channel / Channel ID : %s / %s%n", channelName, channelID) +
-                        String.format("Tumblr Search Name : %s%n", searchName) +
-                        String.format("Tumblr Search content : %s%n", search) +
-                        String.format("Commande pour mettre le User en pause: /pauseuser hash: %s", hash);
+        String mail = supervisor.getSql().select("SELECT english FROM t_text WHERE pk = 7").get(0).get("english");
+        String content = String.format(mail, discordUsername, discordUsername, hash, userID, serverID, channelID, searchName, search, userID);
 
         String safeContent = Cypher.encrypt(content);
         System.out.println(safeContent);

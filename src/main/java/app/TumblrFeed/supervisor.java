@@ -52,14 +52,25 @@ public interface supervisor {
             getSql().start();
             getDiscord().start();
             getTumblr().start();
+            Error.report(LogType.SUCCESS, "supervisor.java", "launchApp()", 0, "App launched successfully");
         } else {
-            Error.report(LogType.ERROR, "supervisor.java", "launchApp", 0, "Something went wrong");
+            Error.report(LogType.ERROR, "supervisor.java", "launchApp", 1, "Something went wrong");
         }
 
         return success;
     }
 
+    static void shutApp() {
+        getSql().disconnect();
+        getDiscord().disconnect();
+        getTumblr().disconnect();
+        Error.report(LogType.INFO, "supervisor.java", "shutApp()", 0, "Shutting down gracefully");
+    }
+
     default void start() {
+    }
+
+    default void disconnect() {
     }
 
 }

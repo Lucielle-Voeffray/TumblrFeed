@@ -69,6 +69,11 @@ public class Discord implements supervisor {
     }
 
     @Override
+    public void disconnect() {
+        client.logout().subscribe();
+    }
+
+    @Override
     public void start() {
         client.on(ChatInputInteractionEvent.class, event -> {
 

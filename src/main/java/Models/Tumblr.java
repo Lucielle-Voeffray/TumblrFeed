@@ -49,6 +49,11 @@ public class Tumblr implements supervisor {
         client = new JumblrClient(consumerKey, consumerSecret);
     }
 
+    @Override
+    public void disconnect() {
+        client = null;
+    }
+
     public void start() {
 
         Sql sql = supervisor.getSql();
