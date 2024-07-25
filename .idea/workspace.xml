@@ -10,10 +10,6 @@
     <list default="true" id="92978bf1-93b6-4998-bcdf-f5ae45362079" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Models/Discord.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Models/Discord.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Models/Sql.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Models/Sql.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Models/Tumblr.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Models/Tumblr.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/TumblrFeed/supervisor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/TumblrFeed/supervisor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/services/Mail.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/services/Mail.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/AllTexts.md" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/AllTexts.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

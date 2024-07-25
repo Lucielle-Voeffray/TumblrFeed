@@ -135,19 +135,24 @@ public class Discord implements supervisor {
     }
 
     public String createSearch(String searchName, String toSearch, String userID, String channelID, String serverID) {
+
         String message = supervisor.getSql().select("SELECT english FROM t_text WHERE pk_text = 2").get(0).get("english");
-        ;
 
-        int isSearchCreationSuccessful = supervisor.getSql().createSearch(toSearch, searchName, userID, serverID, channelID);
+        if (searchForIllegalTerms == 0) {
 
-        if (isSearchCreationSuccessful == 0) {
-            message = supervisor.getSql().select("SELECT english FROM t_text WHERE pk_text = 3").get(0).get("english");
-        } else if (isSearchCreationSuccessful == 2) {
-            message = supervisor.getSql().select("SELECT english FROM t_text WHERE pk_text = 5").get(0).get("english");
-            Error.report(LogType.ERROR, "Discord.java", "createSearch", 0, message);
-        } else if (isSearchCreationSuccessful == 3) {
+            int isSearchCreationSuccessful = supervisor.getSql().createSearch(toSearch, searchName, userID, serverID, channelID);
+
+            if (isSearchCreationSuccessful == 0) {
+                message = supervisor.getSql().select("SELECT english FROM t_text WHERE pk_text = 3").get(0).get("english");
+            } else if (isSearchCreationSuccessful == 2) {
+                message = supervisor.getSql().select("SELECT english FROM t_text WHERE pk_text = 5").get(0).get("english");
+                Error.report(LogType.ERROR, "Discord.java", "createSearch", 0, message);
+            } else if (isSearchCreationSuccessful == 3) {
+                message = supervisor.getSql().select("SELECT english FROM t_text WHERE pk_text = 6").get(0).get("english");
+                Error.report(LogType.ERROR, "Discord.java", "createSearch", 1, message);
+            }
+        } else {
             message = supervisor.getSql().select("SELECT english FROM t_text WHERE pk_text = 6").get(0).get("english");
-            Error.report(LogType.ERROR, "Discord.java", "createSearch", 1, message);
         }
 
         return message;

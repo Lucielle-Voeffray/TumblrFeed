@@ -8,3 +8,4 @@
 | 6           | userPausedErrorMessage | You are not allowed to use this bot at the moment due to the internal moderation system banning you. If you think this is a mistake, you can add an issue on [Github](https://github.com/Lucielle-Voeffray/TumblrFeed/issues/new)                            |
 | 7           | mailContent            | %s tried to create a search with an illegal word ! %nDiscord Username / Hash / id : %s / %s / %s%nDiscord Server ID : %s%nDiscord Channel ID : %s%nTumblr Search Name : %s%nTumblr Search content : %s%nDiscord command to pause the user: /pauseuser ID: %s |
 | 8           | mailSubject            | [EMERGENCY] use of an illegal term in a search!                                                                                                                                                                                                              |
+| 9           |                        |
