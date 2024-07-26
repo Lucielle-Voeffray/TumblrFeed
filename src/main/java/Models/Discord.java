@@ -138,7 +138,7 @@ public class Discord implements supervisor {
 
         String message = supervisor.getSql().select("SELECT english FROM t_text WHERE pk_text = 2").get(0).get("english");
 
-        if (searchForIllegalTerms == 0) {
+        if (!supervisor.getSearchChecker().isIllegal(toSearch, searchName)) {
 
             int isSearchCreationSuccessful = supervisor.getSql().createSearch(toSearch, searchName, userID, serverID, channelID);
 

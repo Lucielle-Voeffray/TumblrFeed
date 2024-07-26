@@ -73,6 +73,14 @@ CREATE TABLE IF NOT EXISTS t_log (
     PRIMARY KEY (pk_log)
 );
 
+CREATE TABLE IF NOT EXISTS t_illegal (
+    pk_illegal serial,
+    word varchar(30) NOT NULL,
+    description varchar(500) NOT NULL,
+
+    PRIMARY KEY (pk_illegal)
+)
+
 CREATE ROLE "tumblrfeed" WITH
 	LOGIN
 	NOSUPERUSER
