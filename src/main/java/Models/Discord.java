@@ -32,21 +32,28 @@ import discord4j.core.event.domain.interaction.ChatInputInteractionEvent;
 import discord4j.core.object.command.ApplicationCommandInteractionOption;
 import discord4j.core.object.command.ApplicationCommandInteractionOptionValue;
 import discord4j.core.object.command.ApplicationCommandOption;
+import discord4j.core.object.entity.User;
 import discord4j.core.object.entity.channel.MessageChannel;
+import discord4j.core.spec.EmbedCreateFields;
+import discord4j.core.spec.EmbedCreateSpec;
 import discord4j.discordjson.json.ApplicationCommandOptionData;
 import discord4j.discordjson.json.ApplicationCommandRequest;
+import discord4j.rest.util.Color;
 import org.jetbrains.annotations.NotNull;
 import secrets.secrets;
 import services.Error;
+import services.Hasher;
 import services.LogType;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Discord implements supervisor {
     private final String token;
     private GatewayDiscordClient client;
-    long guildId;
+    private long guildId;
 
     public Discord() {
         token = secrets.DISCORD;
@@ -156,6 +163,85 @@ public class Discord implements supervisor {
         }
 
         return message;
+    }
+
+    private String deleteSearch(String userID, String searchName) {
+        String message = supervisor.getSql().select("SELECT english FROM t_text WHERE pk_text = 11").get(0).get("english");
+
+        String pkUser = supervisor.getSql().select(String.format("SELECT pk_user FROM t_user WHERE hashedName = %s", Hasher.hash(userID))).get(0).get("pk_user");
+        int delete = supervisor.getSql().update(String.format("DELETE FROM t_search WHERE pk_user = %s AND searchName = %s", pkUser, searchName));
+
+        if (delete == 1) {
+            String s = supervisor.getSql().select("SELECT english FROM t_text WHERE pk_text = 9").get(0).get("english");
+            message = String.format(s, searchName);
+        }
+
+        return message;
+    }
+
+    private String pauseSearch(String userID, String searchName) {
+        String message = supervisor.getSql().select("SELECT english FROM t_text WHERE pk_text = 11").get(0).get("english");
+
+        String pkUser = supervisor.getSql().select(String.format("SELECT pk_user FROM t_user WHERE hashedName = %s", Hasher.hash(userID))).get(0).get("pk_user");
+
+        int pause = supervisor.getSql().update(String.format("UPDATE t_search SET paused = true WHERE pk_user = %s AND searchName = %s", pkUser, searchName));
+
+        if (pause == 1) {
+            String s = supervisor.getSql().select("SELECT english FROM t_text WHERE pk_text = 10").get(0).get("english");
+            message = String.format(s, searchName);
+        }
+
+        return message;
+    }
+
+    private EmbedCreateSpec listMySearches(String userID, String serverID) {
+        String message = supervisor.getSql().select("SELECT english FROM t_text WHERE pk_text = 2").get(0).get("english");
+
+        String pkUser = supervisor.getSql().select(String.format("SELECT pk_user FROM t_user WHERE hashedName = %s", Hasher.hash(userID))).get(0).get("pk_user");
+
+        ArrayList<Map<String, String>> content = supervisor.getSql().select(String.format("SELECT searchName, creation, hashtagName FROM t_search WHERE pk_user = %s", pkUser));
+
+        if (!content.isEmpty()) {
+            message = "";
+            int UwU = 0;
+            for (Map<String, String> search : content) {
+                UwU++;
+                message += String.format("%d", UwU);
+            }
+        }
+
+        User user = client.getUserById(Snowflake.of(Long.parseLong(userID))).block();
+
+        EmbedCreateFields.Author author = new EmbedCreateFields.Author() {
+            @Override
+            public String name() {
+                return user.getUsername();
+            }
+
+            @Override
+            public String url() {
+                return null;
+            }
+
+            @Override
+            public String iconUrl() {
+                return user.getAvatarUrl();
+            }
+        };
+
+        EmbedCreateSpec embed = EmbedCreateSpec.builder()
+                .color(Color.BLUE)
+                .title("Your searches")
+                .author(author)
+                .addField("inline field", "value", true)
+                .addField("inline field", "value", true)
+                .addField("inline field", "value", true)
+                .image("https://i.imgur.com/F9BhEoz.png")
+                .timestamp(Instant.now())
+                .footer("footer", "https://i.imgur.com/F9BhEoz.png")
+                .build();
+
+        return embed;
     }
 
     public void build() {
