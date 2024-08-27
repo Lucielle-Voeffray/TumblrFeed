@@ -198,8 +198,9 @@ public class Discord implements supervisor {
         String message = supervisor.getSql().select("SELECT english FROM t_text WHERE pk_text = 2").get(0).get("english");
 
         String pkUser = supervisor.getSql().select(String.format("SELECT pk_user FROM t_user WHERE hashedName = %s", Hasher.hash(userID))).get(0).get("pk_user");
+        String pkServer = supervisor.getSql().select(String.format("SELECT pk_server From t_server WHERE id = %s", serverID)).get(0).get("pk_server");
 
-        ArrayList<Map<String, String>> content = supervisor.getSql().select(String.format("SELECT searchName, creation, hashtagName FROM t_search WHERE pk_user = %s", pkUser));
+        ArrayList<Map<String, String>> content = supervisor.getSql().select(String.format("SELECT searchName, creation, hashtagName, paused FROM t_search WHERE pk_user = %s AND fk_server = %s", pkUser, pkServer));
 
         if (!content.isEmpty()) {
             message = "";
@@ -207,6 +208,20 @@ public class Discord implements supervisor {
             for (Map<String, String> search : content) {
                 UwU++;
                 message += String.format("%d", UwU);
+            }
+        }
+
+        String searchNames = "";
+        String hastags = "";
+        String paused = "";
+        String creationDate = "";
+
+        if (!content.isEmpty()) {
+            for (Map<String, String> search : content) {
+                searchNames += String.format("%s %n", search.get("searchName"));
+                hastags += String.format("%s %n", search.get("hastagName"));
+                paused += String.format("%s %n", search.get("paused"));
+                creationDate += String.format("%s %n", search.get("creation"));
             }
         }
 
@@ -229,17 +244,30 @@ public class Discord implements supervisor {
             }
         };
 
-        EmbedCreateSpec embed = EmbedCreateSpec.builder()
-                .color(Color.BLUE)
-                .title("Your searches")
-                .author(author)
-                .addField("inline field", "value", true)
-                .addField("inline field", "value", true)
-                .addField("inline field", "value", true)
-                .image("https://i.imgur.com/F9BhEoz.png")
-                .timestamp(Instant.now())
-                .footer("footer", "https://i.imgur.com/F9BhEoz.png")
-                .build();
+        EmbedCreateSpec embed;
+
+        if (!content.isEmpty()) {
+            embed = EmbedCreateSpec.builder()
+                    .color(Color.BLUE)
+                    .title("Your searches in this server")
+                    .author(author)
+                    .addField("Creation date", creationDate, true)
+                    .addField("Search Name", searchNames, true)
+                    .addField("Terms to search", hastags, true)
+                    .addField("Active/Inactive", paused, true)
+                    .timestamp(Instant.now())
+                    .footer("Created by TumblrFeed", "https://i.imgur.com/F9BhEoz.png")
+                    .build();
+        } else {
+            embed = EmbedCreateSpec.builder()
+                    .color(Color.BLUE)
+                    .title("Your searches")
+                    .author(author)
+                    .addField("Oops", message, true)
+                    .timestamp(Instant.now())
+                    .footer("Created by TumblrFeed", "https://i.imgur.com/F9BhEoz.png")
+                    .build();
+        }
 
         return embed;
     }
