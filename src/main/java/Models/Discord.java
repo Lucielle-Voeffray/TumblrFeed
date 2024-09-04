@@ -202,15 +202,6 @@ public class Discord implements supervisor {
 
         ArrayList<Map<String, String>> content = supervisor.getSql().select(String.format("SELECT searchName, creation, hashtagName, paused FROM t_search WHERE pk_user = %s AND fk_server = %s", pkUser, pkServer));
 
-        if (!content.isEmpty()) {
-            message = "";
-            int UwU = 0;
-            for (Map<String, String> search : content) {
-                UwU++;
-                message += String.format("%d", UwU);
-            }
-        }
-
         String searchNames = "";
         String hastags = "";
         String paused = "";
@@ -220,10 +211,17 @@ public class Discord implements supervisor {
             for (Map<String, String> search : content) {
                 searchNames += String.format("%s %n", search.get("searchName"));
                 hastags += String.format("%s %n", search.get("hastagName"));
-                paused += String.format("%s %n", search.get("paused"));
+
+                if (search.get(paused).equalsIgnoreCase("true")) {
+                    paused += ":x:";
+                } else {
+                    paused += ":white_check_mark:";
+                }
+
                 creationDate += String.format("%s %n", search.get("creation"));
             }
         }
+
 
         User user = client.getUserById(Snowflake.of(Long.parseLong(userID))).block();
 
@@ -263,13 +261,93 @@ public class Discord implements supervisor {
                     .color(Color.BLUE)
                     .title("Your searches")
                     .author(author)
-                    .addField("Oops", message, true)
+                    .addField("Oops", message, false)
                     .timestamp(Instant.now())
                     .footer("Created by TumblrFeed", "https://i.imgur.com/F9BhEoz.png")
                     .build();
         }
 
         return embed;
+    }
+
+    /**
+     * BEFORE USE PLEASE CHECK IF THE USER IS ADMIN ON THE SERVER
+     */
+    private @NotNull EmbedCreateSpec listServerSearches(@NotNull String userID, @NotNull String serverID) {
+        EmbedCreateSpec ret;
+        String message = supervisor.getSql().select("SELECT english FROM t_text WHERE pk_text = 2").get(0).get("english");
+
+        String pkUser = supervisor.getSql().select(String.format("SELECT pk_user FROM t_user WHERE hashedName = %s", Hasher.hash(userID))).get(0).get("pk_user");
+        String pkServer = supervisor.getSql().select(String.format("SELECT pk_server From t_server WHERE id = %s", serverID)).get(0).get("pk_server");
+
+        ArrayList<Map<String, String>> content = supervisor.getSql().select(String.format("SELECT searchName, creation, hashtagName, paused FROM t_search WHERE pk_user = %s AND fk_server = %s", pkUser, pkServer));
+
+        String searchNames = "";
+        String hastags = "";
+        String paused = "";
+        String creationDate = "";
+
+        if (!content.isEmpty()) {
+            for (Map<String, String> search : content) {
+                searchNames += String.format("%s %n", search.get("searchName"));
+                hastags += String.format("%s %n", search.get("hastagName"));
+
+                if (search.get(paused).equalsIgnoreCase("true")) {
+                    paused += ":x:";
+                } else {
+                    paused += ":white_check_mark:";
+                }
+
+                creationDate += String.format("%s %n", search.get("creation"));
+            }
+        }
+
+
+        User user = client.getUserById(Snowflake.of(Long.parseLong(userID))).block();
+
+        EmbedCreateFields.Author author = new EmbedCreateFields.Author() {
+            @Override
+            public String name() {
+                return user.getUsername();
+            }
+
+            @Override
+            public String url() {
+                return null;
+            }
+
+            @Override
+            public String iconUrl() {
+                return user.getAvatarUrl();
+            }
+        };
+
+        EmbedCreateSpec embed;
+
+        if (!content.isEmpty()) {
+            embed = EmbedCreateSpec.builder()
+                    .color(Color.BLUE)
+                    .title("Your searches in this server")
+                    .author(author)
+                    .addField("Creation date", creationDate, true)
+                    .addField("Search Name", searchNames, true)
+                    .addField("Terms to search", hastags, true)
+                    .addField("Active/Inactive", paused, true)
+                    .timestamp(Instant.now())
+                    .footer("Created by TumblrFeed", "https://i.imgur.com/F9BhEoz.png")
+                    .build();
+        } else {
+            embed = EmbedCreateSpec.builder()
+                    .color(Color.BLUE)
+                    .title("Your searches")
+                    .author(author)
+                    .addField("Oops", message, false)
+                    .timestamp(Instant.now())
+                    .footer("Created by TumblrFeed", "https://i.imgur.com/F9BhEoz.png")
+                    .build();
+        }
+
+        return ret;
     }
 
     public void build() {

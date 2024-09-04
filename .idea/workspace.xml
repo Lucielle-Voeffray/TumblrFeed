@@ -28,6 +28,25 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "Lucielle-Voeffray"
+  }
+}]]></component>
+  <component name="GithubProjectSettings">
+    <option name="branchProtectionPatterns">
+      <list>
+        <option value="main" />
+      </list>
+    </option>
+  </component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "git@github.com:Lucielle-Voeffray/TumblrFeed.git",
+    "accountId": "85d49d80-70b4-4ac6-80ec-8f287b412af1"
+  }
+}]]></component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -305,7 +324,15 @@
       <option name="project" value="LOCAL" />
       <updated>1721994651497</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="Avancements du Embed pour lister les recherches">
+      <option name="closed" value="true" />
+      <created>1724755503275</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1724755503275</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -342,7 +369,8 @@
     <MESSAGE value="Un jour j'apprendrai à utiliser GIT correctement, d'ici là ça sera toujours des messages goofy lol" />
     <MESSAGE value="Boop" />
     <MESSAGE value="Creation of the checker allowing to moderate the searches" />
-    <option name="LAST_COMMIT_MESSAGE" value="Creation of the checker allowing to moderate the searches" />
+    <MESSAGE value="Avancements du Embed pour lister les recherches" />
+    <option name="LAST_COMMIT_MESSAGE" value="Avancements du Embed pour lister les recherches" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
