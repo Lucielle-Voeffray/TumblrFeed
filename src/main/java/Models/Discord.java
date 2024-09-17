@@ -274,7 +274,7 @@ public class Discord implements supervisor {
      * BEFORE USE PLEASE CHECK IF THE USER IS ADMIN ON THE SERVER
      */
     private @NotNull EmbedCreateSpec listServerSearches(@NotNull String userID, @NotNull String serverID) {
-        EmbedCreateSpec ret;
+        EmbedCreateSpec embed;
         String message = supervisor.getSql().select("SELECT english FROM t_text WHERE pk_text = 2").get(0).get("english");
 
         String pkUser = supervisor.getSql().select(String.format("SELECT pk_user FROM t_user WHERE hashedName = %s", Hasher.hash(userID))).get(0).get("pk_user");
@@ -307,7 +307,8 @@ public class Discord implements supervisor {
 
         EmbedCreateFields.Author author = new EmbedCreateFields.Author() {
             @Override
-            public String name() {
+            public @NotNull String name() {
+                assert user != null;
                 return user.getUsername();
             }
 
@@ -318,16 +319,15 @@ public class Discord implements supervisor {
 
             @Override
             public String iconUrl() {
+                assert user != null;
                 return user.getAvatarUrl();
             }
         };
 
-        EmbedCreateSpec embed;
-
         if (!content.isEmpty()) {
             embed = EmbedCreateSpec.builder()
                     .color(Color.BLUE)
-                    .title("Your searches in this server")
+                    .title("This is all the searches on this server")
                     .author(author)
                     .addField("Creation date", creationDate, true)
                     .addField("Search Name", searchNames, true)
@@ -337,9 +337,10 @@ public class Discord implements supervisor {
                     .footer("Created by TumblrFeed", "https://i.imgur.com/F9BhEoz.png")
                     .build();
         } else {
+            message = "There are no searches on this server. If you believe/know it to be false, please contact me on github";
             embed = EmbedCreateSpec.builder()
                     .color(Color.BLUE)
-                    .title("Your searches")
+                    .title("This is all the searches on this server")
                     .author(author)
                     .addField("Oops", message, false)
                     .timestamp(Instant.now())
@@ -347,7 +348,32 @@ public class Discord implements supervisor {
                     .build();
         }
 
-        return ret;
+        return embed;
+    }
+
+    private boolean deleteMyData(String userID) {
+        boolean success = false;
+
+        String pkUser = supervisor.getSql().select(String.format("SELECT pk_user FROM t_user WHERE hashedName = %s", Hasher.hash(userID))).get(0).get("pk_user");
+
+        int rowsDeletedUser = supervisor.getSql().update(String.format("DELETE FROM t_user WHERE pk_user = %s", pkUser));
+        int rowsDeletedSearches = supervisor.getSql().update(String.format("DELETE FROM t_user WHERE pk_user = %s", pkUser));
+
+        if (rowsDeletedUser == 1) {
+            success = true;
+        }
+
+        return success;
+    }
+
+    private boolean deleteSeverData(String serverID, String userID) {
+        boolean success = false;
+
+        String pkServer = supervisor.getSql().select(String.format("SELECT pk_server FROM t_server WHERE id = %s", serverID)).get(0).get("id");
+
+        supervisor.getSql().update("DELETE FROM t_server");
+
+        return success;
     }
 
     public void build() {

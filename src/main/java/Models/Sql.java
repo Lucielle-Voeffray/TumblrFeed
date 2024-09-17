@@ -97,7 +97,6 @@ public class Sql implements supervisor {
         PGSimpleDataSource source = new PGSimpleDataSource();
         source.setUrl(url);
         datasource = source;
-
     }
 
     /**
