@@ -366,14 +366,52 @@ public class Discord implements supervisor {
         return success;
     }
 
+    /**
+     * CONTROL THAT THE USER IS SERVER ADMIN BEFORE USING THIS
+     */
     private boolean deleteSeverData(String serverID, String userID) {
         boolean success = false;
 
         String pkServer = supervisor.getSql().select(String.format("SELECT pk_server FROM t_server WHERE id = %s", serverID)).get(0).get("id");
 
-        supervisor.getSql().update("DELETE FROM t_server");
+        int serverDataDeleted = supervisor.getSql().update(String.format("DELETE FROM t_server WHERE id = %s", pkServer));
+        int searchesDataDeleted = supervisor.getSql().update(String.format("DELETE FROM t_searches WHERE fk_server = %s", pkServer));
+
+        if (serverDataDeleted + searchesDataDeleted > 0) {
+            success = true;
+        }
 
         return success;
+    }
+
+    private @NotNull EmbedCreateSpec contactCreator() {
+        EmbedCreateSpec embed;
+
+        EmbedCreateFields.Author author = new EmbedCreateFields.Author() {
+            @Override
+            public String name() {
+                return "Lucielle";
+            }
+
+            @Override
+            public String url() {
+                return "https://github.com/Lucielle-Voeffray/TumblrFeed";
+            }
+
+            @Override
+            public String iconUrl() {
+                return "https://avatars.githubusercontent.com/u/174204443?v=4";
+            }
+        };
+
+        embed = EmbedCreateSpec.builder()
+                .color(Color.PINK)
+                .title("How to contact me UwU")
+                .author(author)
+                .build();
+
+
+        return embed;
     }
 
     public void build() {

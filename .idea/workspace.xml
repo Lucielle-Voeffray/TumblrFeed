@@ -10,7 +10,6 @@
     <list default="true" id="92978bf1-93b6-4998-bcdf-f5ae45362079" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Models/Discord.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Models/Discord.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Models/Sql.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Models/Sql.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,12 +28,12 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "Lucielle-Voeffray"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Lucielle-Voeffray&quot;
   }
-}]]></component>
+}</component>
   <component name="GithubProjectSettings">
     <option name="branchProtectionPatterns">
       <list>
@@ -42,12 +41,12 @@
       </list>
     </option>
   </component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "git@github.com:Lucielle-Voeffray/TumblrFeed.git",
-    "accountId": "85d49d80-70b4-4ac6-80ec-8f287b412af1"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;git@github.com:Lucielle-Voeffray/TumblrFeed.git&quot;,
+    &quot;accountId&quot;: &quot;85d49d80-70b4-4ac6-80ec-8f287b412af1&quot;
   }
-}]]></component>
+}</component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -341,7 +340,15 @@
       <option name="project" value="LOCAL" />
       <updated>1725446772770</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="DeleteMyData &amp;&amp; DeleteServerData">
+      <option name="closed" value="true" />
+      <created>1726570282831</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1726570282831</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -380,7 +387,8 @@
     <MESSAGE value="Creation of the checker allowing to moderate the searches" />
     <MESSAGE value="Avancements du Embed pour lister les recherches" />
     <MESSAGE value="Début de listServerSearches" />
-    <option name="LAST_COMMIT_MESSAGE" value="Début de listServerSearches" />
+    <MESSAGE value="DeleteMyData &amp;&amp; DeleteServerData" />
+    <option name="LAST_COMMIT_MESSAGE" value="DeleteMyData &amp;&amp; DeleteServerData" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
